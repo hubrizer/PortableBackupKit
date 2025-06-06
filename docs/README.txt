@@ -62,20 +62,16 @@ SFTP CREDENTIALS
 ----------
 FTP Settings
 
-SFTP Server : s20.wpxhosting.com or (67.202.92.20)
+SFTP Server : your_sftp_host or (your_sftp_ip)
 Port : 2222
 
-SFTP username : jshirley.ftp@dianedrain.com
-SFTP password : @20ILoveDianeDrainsWebsite25!
+SFTP username : your_username
+SFTP password : your_password
 
 Brevo Key:
-dd
-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
-
-gds
-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
+YOUR_BREVO_KEY
 
 Sender Email:
-no-reply@dianedrain.com
+your_sender_email@example.com
 
 send to: <any email>
