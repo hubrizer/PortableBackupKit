@@ -1,0 +1,82 @@
+Step-by-Step Setup
+==================
+
+1. Extract or copy the **PortableBackupKit** folder to any local drive.
+   └─ Verify it contains:
+        • rclone.exe
+        • setup.ps1
+        • (this file)
+
+2. Launch Windows PowerShell *in that same folder*:
+   • Shift-right-click in Explorer → “Open PowerShell window here”
+   • OR open Windows Terminal and `cd` to the folder.
+
+3. Temporarily relax script signing for this session only:
+
+        Set-ExecutionPolicy -Scope Process Bypass -Force
+
+4. Run the setup wizard:
+
+        .\setup.ps1
+
+5. Follow the prompts:
+   • **SFTP server** – e.g. `s20.wpxhosting.com`
+   • **Port**        – 22 (default) or 2222 for WPX
+   • **Username**    – your SFTP login
+   • **Password**    – typed invisibly
+   • **Remote source path** – `/` for entire account or `/public_html`
+   • **Local destination folder** – e.g. `D:\Backups\MySite`
+   • **Schedule**    – choose:
+       1 = daily at HH:MM
+       2 = every N hours
+       3 = weekly on specific days
+   • **Time/Interval** – depends on option above
+
+6. When the wizard finishes it reports:
+   • `backup.ps1` created
+   • Task “Portable Rclone Incremental Backup” registered
+
+7. Confirm the first run (optional):
+
+        powershell -ExecutionPolicy Bypass -File .\backup.ps1
+
+   Watch rclone copy the initial data; subsequent runs transfer only changes.
+
+Files & Folders Created
+-----------------------
+PortableBackupKit\
+│   rclone.exe
+│   setup.ps1
+│   backup.ps1        ← auto-generated
+│   rclone.conf       ← encrypted credentials
+│   README.txt / INSTRUCTIONS.txt
+└── <your-chosen-destination>\
+    ├─ current\        ← live mirror of SFTP source
+    └─ archive\YYYY-MM-DD_HHMMSS\  ← snapshots (auto-pruned)
+
+Adjusting Retention
+-------------------
+Open **backup.ps1** and change:
+
+    [int] $RetentionDays = 30
+
+to any integer. Snapshots older than that many days are deleted each run.
+
+Changing Schedule Later
+-----------------------
+Run **setup.ps1** again; it overwrites the Task Scheduler trigger and
+backup.ps1 but keeps existing credentials.
+
+Troubleshooting
+---------------
+• Log file lives next to *archive\…* as `backup.log`.  
+• Task Scheduler → “Task Scheduler Library” → find the job → *History* tab
+  shows last run/next run and exit codes.  
+• If storage fills, prune archive or move the destination folder.
+
+Need a full restore?
+--------------------
+1. Copy the desired snapshot folder over *current* (or pull single files).  
+2. Run `backup.ps1` to re-sync the restored content to the SFTP server.
+
+Enjoy safe, incremental backups!  🙂

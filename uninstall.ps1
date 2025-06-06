@@ -1,0 +1,48 @@
+<#  uninstall.ps1 – remove PortableBackupKit artifacts  #>
+
+# --- constants ----------------------------------------
+$KitDir   = $PSScriptRoot
+$TaskName = 'Portable Rclone Incremental Backup'
+$BackupPS = Join-Path $KitDir 'backup.ps1'
+$RcloneCF = Join-Path $KitDir 'rclone.conf'
+# ------------------------------------------------------
+
+Write-Host "`n=== PortableBackupKit Uninstall ===`n"
+
+# 1. Remove the Task-Scheduler job
+try {
+    $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop  # works even if job is in a sub-folder
+    Disable-ScheduledTask  $task | Out-Null
+    Unregister-ScheduledTask $task -Confirm:$false
+    Write-Host "OK  Task '$TaskName' removed."
+} catch {
+    Write-Host "INFO Task '$TaskName' not found (already removed)."
+}
+
+# 2. Delete backup.ps1 and rclone.conf?
+if (Read-Host 'Delete backup.ps1 and rclone.conf? (y/N)' -match '^[Yy]$') {
+    foreach ($f in @($BackupPS,$RcloneCF)) { if (Test-Path $f) { Remove-Item $f -Force } }
+    Write-Host "OK  Script and config removed."
+} else {
+    Write-Host "Keeping backup.ps1 / rclone.conf."
+}
+
+# 3. Delete local backup data?
+if (Test-Path $BackupPS) {
+    $cur = (Select-String $BackupPS '\$Current\s*=\s*''([^'']+)'''  | Select -First 1).Matches.Groups[1].Value
+    $arc = (Select-String $BackupPS '\$ArchiveRoot\s*=\s*''([^'']+)'''| Select -First 1).Matches.Groups[1].Value
+} else { $cur=$null; $arc=$null }
+
+if ($cur) {
+    $root = Split-Path $arc -Parent
+    if (Read-Host "Delete ALL local backup data at '$root'? (y/N)" -match '^[Yy]$') {
+        foreach ($p in @($cur,$arc)) { if (Test-Path $p) { Remove-Item $p -Recurse -Force } }
+        Write-Host "OK  Local backup folders removed."
+    } else {
+        Write-Host "Keeping local backup data."
+    }
+} else {
+    Write-Host "INFO Could not auto-detect backup folders (backup.ps1 missing or edited)."
+}
+
+Write-Host "`nUninstall finished. You may now delete the PortableBackupKit folder if you wish."

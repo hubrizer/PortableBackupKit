@@ -1,0 +1,42 @@
+2025/06/06 14:32:53 ERROR : Local file system at //?/C:/tools/rclone/$RemoteSpec: error reading source root directory: directory not found
+2025/06/06 14:32:53 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting files as there were IO errors
+2025/06/06 14:32:53 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting directories as there were IO errors
+2025/06/06 14:32:53 ERROR : Attempt 1/3 failed with 1 errors and: directory not found
+2025/06/06 14:32:53 ERROR : Local file system at //?/C:/tools/rclone/$RemoteSpec: error reading source root directory: directory not found
+2025/06/06 14:32:53 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting files as there were IO errors
+2025/06/06 14:32:53 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting directories as there were IO errors
+2025/06/06 14:32:53 ERROR : Attempt 2/3 failed with 1 errors and: directory not found
+2025/06/06 14:32:53 ERROR : Local file system at //?/C:/tools/rclone/$RemoteSpec: error reading source root directory: directory not found
+2025/06/06 14:32:53 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting files as there were IO errors
+2025/06/06 14:32:53 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting directories as there were IO errors
+2025/06/06 14:32:53 ERROR : Attempt 3/3 failed with 1 errors and: directory not found
+2025/06/06 14:32:53 INFO  :           0 B / 0 B, -, 0 B/s, ETA -
+2025/06/06 14:32:53 NOTICE: Failed to sync: directory not found
+2025/06/06 14:37:42 ERROR : Local file system at //?/C:/tools/rclone/$RemoteSpec: error reading source root directory: directory not found
+2025/06/06 14:37:42 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting files as there were IO errors
+2025/06/06 14:37:42 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting directories as there were IO errors
+2025/06/06 14:37:42 ERROR : Attempt 1/3 failed with 1 errors and: directory not found
+2025/06/06 14:37:42 ERROR : Local file system at //?/C:/tools/rclone/$RemoteSpec: error reading source root directory: directory not found
+2025/06/06 14:37:42 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting files as there were IO errors
+2025/06/06 14:37:42 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting directories as there were IO errors
+2025/06/06 14:37:42 ERROR : Attempt 2/3 failed with 1 errors and: directory not found
+2025/06/06 14:37:42 ERROR : Local file system at //?/C:/tools/rclone/$RemoteSpec: error reading source root directory: directory not found
+2025/06/06 14:37:42 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting files as there were IO errors
+2025/06/06 14:37:42 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting directories as there were IO errors
+2025/06/06 14:37:42 ERROR : Attempt 3/3 failed with 1 errors and: directory not found
+2025/06/06 14:37:42 INFO  :           0 B / 0 B, -, 0 B/s, ETA -
+2025/06/06 14:37:42 NOTICE: Failed to sync: directory not found
+2025/06/06 14:39:30 ERROR : Local file system at //?/C:/tools/rclone/$RemoteSpec: error reading source root directory: directory not found
+2025/06/06 14:39:30 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting files as there were IO errors
+2025/06/06 14:39:30 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting directories as there were IO errors
+2025/06/06 14:39:30 ERROR : Attempt 1/3 failed with 1 errors and: directory not found
+2025/06/06 14:39:30 ERROR : Local file system at //?/C:/tools/rclone/$RemoteSpec: error reading source root directory: directory not found
+2025/06/06 14:39:30 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting files as there were IO errors
+2025/06/06 14:39:30 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting directories as there were IO errors
+2025/06/06 14:39:30 ERROR : Attempt 2/3 failed with 1 errors and: directory not found
+2025/06/06 14:39:30 ERROR : Local file system at //?/C:/tools/rclone/$RemoteSpec: error reading source root directory: directory not found
+2025/06/06 14:39:30 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting files as there were IO errors
+2025/06/06 14:39:30 ERROR : Local file system at //?/C:/tools/rclone/$LocalRoot/current: not deleting directories as there were IO errors
+2025/06/06 14:39:30 ERROR : Attempt 3/3 failed with 1 errors and: directory not found
+2025/06/06 14:39:30 INFO  :           0 B / 0 B, -, 0 B/s, ETA -
+2025/06/06 14:39:30 NOTICE: Failed to sync: directory not found
