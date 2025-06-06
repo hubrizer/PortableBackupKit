@@ -119,6 +119,7 @@ if (Test-Path $RcloneConf) {
     }
     Set-Content -Path $RcloneConf -Value $out
 }
+
 Add-Content -Path $RcloneConf -Value @('', $section)
 Write-Host 'Settings stored in rclone.conf'
 
