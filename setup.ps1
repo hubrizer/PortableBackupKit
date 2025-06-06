@@ -95,7 +95,7 @@ if (Test-Path $RcloneConf) {
 }
 
 # 6  Generate backup.ps1
-$RemoteSpec = "${Remote}:$RemotePath"
+$RemoteSpec = "${RemoteName}:$RemotePath"
 $backup = @"
 # backup.ps1 – incremental SFTP mirror with snapshots & optional Brevo alert
 param(
