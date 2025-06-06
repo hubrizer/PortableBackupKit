@@ -152,7 +152,13 @@ if (`$BrevoKey -and `$BrevoSender -and `$BrevoTo) {
 }
 "@
 
-$backup | Set-Content -Encoding UTF8 $BackupPS1
+# Ensure Windows (CRLF) line endings regardless of host OS
+$backupCRLF = $backup -replace "`n", "`r`n"
+[System.IO.File]::WriteAllText(
+    $BackupPS1,
+    $backupCRLF,
+    [System.Text.UTF8Encoding]::new($true)
+)
 Write-Host "backup.ps1 created"
 
 # 7  Task Scheduler job
