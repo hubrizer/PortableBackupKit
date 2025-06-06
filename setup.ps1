@@ -102,52 +102,52 @@ param(
     [string]`$Remote        = '$RemoteSpec',
     [string]`$Current       = '$LocalRoot\current',
     [string]`$ArchiveRoot   = '$LocalRoot\archive',
-    [int]   `\$RetentionDays = 30,
+    [int]   `$RetentionDays = 30,
     [string]`$BrevoKey      = '$BrevoKey',
     [string]`$BrevoSender   = '$BrevoSender',
     [string]`$BrevoTo       = '$BrevoTo',
     [string]`$SubjectBase   = '$SubjectBase'
 )
 
-`\$env:RCLONE_CONFIG = (Join-Path "`\$PSScriptRoot" 'rclone.conf')
-`\$Rclone            = (Join-Path "`\$PSScriptRoot" 'rclone.exe')
+`$env:RCLONE_CONFIG = (Join-Path "`$PSScriptRoot" 'rclone.conf')
+`$Rclone            = (Join-Path "`$PSScriptRoot" 'rclone.exe')
 
-New-Item -Path "`\$Current"     -ItemType Directory -Force | Out-Null
-New-Item -Path "`\$ArchiveRoot" -ItemType Directory -Force | Out-Null
+New-Item -Path "`$Current"     -ItemType Directory -Force | Out-Null
+New-Item -Path "`$ArchiveRoot" -ItemType Directory -Force | Out-Null
 
-`\$Start   = Get-Date
-`\$NowTag  = `\$Start.ToString('yyyy-MM-dd_HHmmss')
-`\$Archive = Join-Path "`\$ArchiveRoot" `\$NowTag
-`\$LogFile = Join-Path (Split-Path "`\$ArchiveRoot") 'backup.log'
+`$Start   = Get-Date
+`$NowTag  = `$Start.ToString('yyyy-MM-dd_HHmmss')
+`$Archive = Join-Path "`$ArchiveRoot" `$NowTag
+`$LogFile = Join-Path (Split-Path "`$ArchiveRoot") 'backup.log'
 
-& "`\$Rclone" sync "`\$Remote" "`\$Current" `
+& "`$Rclone" sync "`$Remote" "`$Current" `
     --links --create-empty-src-dirs `
-    --backup-dir="`\$Archive" `
+    --backup-dir="`$Archive" `
     --progress --stats=10s --stats-one-line `
-    --log-file="`\$LogFile" --log-level INFO
+    --log-file="`$LogFile" --log-level INFO
 
-Get-ChildItem "`\$ArchiveRoot" -Directory |
-    Where-Object { `\$\_.LastWriteTime -lt (Get-Date).AddDays(-`\$RetentionDays) } |
+Get-ChildItem "`$ArchiveRoot" -Directory |
+    Where-Object { `$_.LastWriteTime -lt (Get-Date).AddDays(-`$RetentionDays) } |
     Remove-Item -Recurse -Force
 
-`\$End = Get-Date
-if (`\$BrevoKey -and `\$BrevoSender -and `\$BrevoTo) {
-    `\$Status  = if (`\$LASTEXITCODE -eq 0) { 'SUCCESS' } else { 'FAIL' }
-    `\$Subject = "`\$SubjectBase [`\$Status] `\$(\$Start.ToString('yyyy-MM-dd HH:mm')) -> `\$(\$End.ToString('HH:mm'))"
-    `\$Body    = "Backup run: `\$Status`nStart : `\$Start`nEnd   : `\$End`nLog file: `\$LogFile"
+`$End = Get-Date
+if (`$BrevoKey -and `$BrevoSender -and `$BrevoTo) {
+    `$Status  = if (`$LASTEXITCODE -eq 0) { 'SUCCESS' } else { 'FAIL' }
+    `$Subject = "`$SubjectBase [`$Status] `$(`$Start.ToString('yyyy-MM-dd HH:mm')) -> `$(`$End.ToString('HH:mm'))"
+    `$Body    = "Backup run: `$Status`nStart : `$Start`nEnd   : `$End`nLog file: `$LogFile"
     try {
         Invoke-RestMethod -Method Post `
             -Uri 'https://api.brevo.com/v3/smtp/email' `
-            -Headers @{ 'api-key' = `\$BrevoKey; 'Content-Type' = 'application/json' } `
+            -Headers @{ 'api-key' = `$BrevoKey; 'Content-Type' = 'application/json' } `
             -Body ( @{
-                sender      = @{ name = 'Backup Bot'; email = `\$BrevoSender }
-                to          = @(@{ email = `\$BrevoTo })
-                subject     = `\$Subject
-                textContent = `\$Body
+                sender      = @{ name = 'Backup Bot'; email = `$BrevoSender }
+                to          = @(@{ email = `$BrevoTo })
+                subject     = `$Subject
+                textContent = `$Body
             } | ConvertTo-Json -Depth 4 )
-        Write-Host "Brevo alert sent to `\$BrevoTo"
+        Write-Host "Brevo alert sent to `$BrevoTo"
     } catch {
-        Write-Warning "Brevo e-mail failed: `\$(`\$_.Exception.Message)"
+        Write-Warning "Brevo e-mail failed: `$(`$_.Exception.Message)"
     }
 }
 "@
