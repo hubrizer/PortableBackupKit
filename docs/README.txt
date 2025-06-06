@@ -21,8 +21,8 @@ Folder layout
 PortableBackupKit\
     rclone.exe
     setup.ps1          (wizard – run once)
-    backup.ps1         (generated job)
-    rclone.conf        (generated, encrypted)
+    backup.ps1         (job script)
+    rclone.conf        (generated, encrypted settings)
     README.txt
     INSTRUCTIONS.txt
     <Destination root>\
