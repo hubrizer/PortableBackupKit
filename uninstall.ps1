@@ -28,9 +28,26 @@ if (Read-Host 'Delete backup.ps1 and rclone.conf? (y/N)' -match '^[Yy]$') {
 }
 
 # 3. Delete local backup data?
-if (Test-Path $BackupPS) {
-    $cur = (Select-String $BackupPS '\$Current\s*=\s*''([^'']+)'''  | Select -First 1).Matches.Groups[1].Value
-    $arc = (Select-String $BackupPS '\$ArchiveRoot\s*=\s*''([^'']+)'''| Select -First 1).Matches.Groups[1].Value
+function Get-IniSection($Path, $Section) {
+    $lines = Get-Content $Path
+    $inside = $false
+    $res = @{}
+    foreach ($line in $lines) {
+        if ($line -match '^\s*\[(.+)\]\s*$') {
+            $inside = ($matches[1] -eq $Section)
+            continue
+        }
+        if ($inside -and $line -match '^\s*([^=]+?)\s*=\s*(.*)$') {
+            $res[$matches[1].Trim()] = $matches[2].Trim()
+        }
+    }
+    return $res
+}
+
+if (Test-Path $RcloneCF) {
+    $cfg = Get-IniSection $RcloneCF 'backup'
+    $cur = $cfg['Current']
+    $arc = $cfg['ArchiveRoot']
 } else { $cur=$null; $arc=$null }
 
 if ($cur) {
@@ -42,7 +59,7 @@ if ($cur) {
         Write-Host "Keeping local backup data."
     }
 } else {
-    Write-Host "INFO Could not auto-detect backup folders (backup.ps1 missing or edited)."
+    Write-Host "INFO Could not auto-detect backup folders (rclone.conf missing or section removed)."
 }
 
 Write-Host "`nUninstall finished. You may now delete the PortableBackupKit folder if you wish."

@@ -94,66 +94,33 @@ if (Test-Path $RcloneConf) {
     & $RcloneExe config create $RemoteName sftp host=$SftpHost port=$SftpPort user=$SftpUser pass=$Obscured
 }
 
-# 6  Generate backup.ps1
+# 6  Store settings in rclone.conf
 $RemoteSpec = "${RemoteName}:$RemotePath"
-$backup = @"
-# backup.ps1 – incremental SFTP mirror with snapshots & optional Brevo alert
-param(
-    [string]`$Remote        = '$RemoteSpec',
-    [string]`$Current       = '$LocalRoot\current',
-    [string]`$ArchiveRoot   = '$LocalRoot\archive',
-    [int]   `$RetentionDays = 30,
-    [string]`$BrevoKey      = '$BrevoKey',
-    [string]`$BrevoSender   = '$BrevoSender',
-    [string]`$BrevoTo       = '$BrevoTo',
-    [string]`$SubjectBase   = '$SubjectBase'
-)
-
-`$env:RCLONE_CONFIG = (Join-Path "`$PSScriptRoot" 'rclone.conf')
-`$Rclone            = (Join-Path "`$PSScriptRoot" 'rclone.exe')
-
-New-Item -Path "`$Current"     -ItemType Directory -Force | Out-Null
-New-Item -Path "`$ArchiveRoot" -ItemType Directory -Force | Out-Null
-
-`$Start   = Get-Date
-`$NowTag  = `$Start.ToString('yyyy-MM-dd_HHmmss')
-`$Archive = Join-Path "`$ArchiveRoot" `$NowTag
-`$LogFile = Join-Path (Split-Path "`$ArchiveRoot") 'backup.log'
-
-& "`$Rclone" sync "`$Remote" "`$Current" `
-    --links --create-empty-src-dirs `
-    --backup-dir="`$Archive" `
-    --progress --stats=10s --stats-one-line `
-    --log-file="`$LogFile" --log-level INFO
-
-Get-ChildItem "`$ArchiveRoot" -Directory |
-    Where-Object { `$_.LastWriteTime -lt (Get-Date).AddDays(-`$RetentionDays) } |
-    Remove-Item -Recurse -Force
-
-`$End = Get-Date
-if (`$BrevoKey -and `$BrevoSender -and `$BrevoTo) {
-    `$Status  = if (`$LASTEXITCODE -eq 0) { 'SUCCESS' } else { 'FAIL' }
-    `$Subject = "`$SubjectBase [`$Status] `$(`$Start.ToString('yyyy-MM-dd HH:mm')) -> `$(`$End.ToString('HH:mm'))"
-    `$Body    = "Backup run: `$Status`nStart : `$Start`nEnd   : `$End`nLog file: `$LogFile"
-    try {
-        Invoke-RestMethod -Method Post `
-            -Uri 'https://api.brevo.com/v3/smtp/email' `
-            -Headers @{ 'api-key' = `$BrevoKey; 'Content-Type' = 'application/json' } `
-            -Body ( @{
-                sender      = @{ name = 'Backup Bot'; email = `$BrevoSender }
-                to          = @(@{ email = `$BrevoTo })
-                subject     = `$Subject
-                textContent = `$Body
-            } | ConvertTo-Json -Depth 4 )
-        Write-Host "Brevo alert sent to `$BrevoTo"
-    } catch {
-        Write-Warning "Brevo e-mail failed: `$(`$_.Exception.Message)"
-    }
-}
+$section = @"
+[backup]
+Remote        = $RemoteSpec
+Current       = $LocalRoot\current
+ArchiveRoot   = $LocalRoot\archive
+RetentionDays = 30
+BrevoKey      = $BrevoKey
+BrevoSender   = $BrevoSender
+BrevoTo       = $BrevoTo
+SubjectBase   = $SubjectBase
 "@
 
-$backup | Set-Content -Encoding UTF8 $BackupPS1
-Write-Host "backup.ps1 created"
+if (Test-Path $RcloneConf) {
+    $lines = Get-Content $RcloneConf
+    $out   = New-Object System.Collections.Generic.List[string]
+    $skip  = $false
+    foreach ($line in $lines) {
+        if ($line -match '^\[backup\]') { $skip = $true; continue }
+        if ($skip -and $line -match '^\[') { $skip = $false }
+        if (-not $skip) { $out.Add($line) }
+    }
+    Set-Content -Path $RcloneConf -Value $out
+}
+Add-Content -Path $RcloneConf -Value @('', $section)
+Write-Host 'Settings stored in rclone.conf'
 
 # 7  Task Scheduler job
 $Action    = New-ScheduledTaskAction -Execute 'powershell.exe' `

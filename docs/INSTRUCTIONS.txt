@@ -33,7 +33,7 @@ Step-by-Step Setup
    • **Time/Interval** – depends on option above
 
 6. When the wizard finishes it reports:
-   • `backup.ps1` created
+   • Settings saved to rclone.conf
    • Task “Portable Rclone Incremental Backup” registered
 
 7. Confirm the first run (optional):
@@ -47,8 +47,8 @@ Files & Folders Created
 PortableBackupKit\
 │   rclone.exe
 │   setup.ps1
-│   backup.ps1        ← auto-generated
-│   rclone.conf       ← encrypted credentials
+│   backup.ps1        ← job script
+│   rclone.conf       ← encrypted credentials & settings
 │   README.txt / INSTRUCTIONS.txt
 └── <your-chosen-destination>\
     ├─ current\        ← live mirror of SFTP source
@@ -56,16 +56,16 @@ PortableBackupKit\
 
 Adjusting Retention
 -------------------
-Open **backup.ps1** and change:
+Open **rclone.conf** and edit the `[backup]` section:
 
-    [int] $RetentionDays = 30
+    RetentionDays = 30
 
-to any integer. Snapshots older than that many days are deleted each run.
+Change the value to any integer. Snapshots older than that many days are deleted each run.
 
 Changing Schedule Later
 -----------------------
 Run **setup.ps1** again; it overwrites the Task Scheduler trigger and
-backup.ps1 but keeps existing credentials.
+updates rclone.conf but keeps existing credentials.
 
 Troubleshooting
 ---------------
