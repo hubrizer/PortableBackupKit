@@ -15,6 +15,15 @@ Step-by-Step Setup
 
         Set-ExecutionPolicy -Scope Process Bypass -Force
 
+WPX.NET: create an SFTP user
+----------------------------
+If you host on WPX.NET you will need an SFTP login for the backup kit.
+
+1. Sign in at `my.wpx.net` and open **Manage Service** for your site.
+2. Go to **SFTP/FTP Users** and click **Add new user**.
+3. Choose a username, password and root path (e.g. `/public_html`).
+4. Save the user and remember that WPX uses SFTP port `2222`.
+
 4. Run the setup wizard:
 
         .\setup.ps1
