@@ -63,6 +63,7 @@ Uninstall
 Run `uninstall.ps1` to remove the Task-Scheduler job "Portable Rclone Incremental Backup".
 The script can also delete `rclone.conf`, `backup.ps1`, `last-run.txt`,
 `backup.log` and any local backup folders.
+Each item is removed only when you respond **Y** to its prompt.
 Deleting the entire PortableBackupKit folder is only needed after
 running the script.
 Deletion only happens when you reply `Y` to each prompt.
