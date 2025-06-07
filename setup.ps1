@@ -39,15 +39,15 @@ $credOK = $false
 while (-not $credOK) {
     $SftpHost = ''
     while (-not $SftpHost) {
-        $SftpHost = Read-Host 'SFTP server (e.g. s20.wpxhosting.com):'
+        $SftpHost = Read-Host 'SFTP server (e.g. s20.wpxhosting.com)'
     }
-    $SftpPort = Read-Host 'Port [22] (2222 is required by WPX.NET):'; if (-not $SftpPort) { $SftpPort = 22 }
+    $SftpPort = Read-Host 'Port [22] (2222 is required by WPX.NET)'; if (-not $SftpPort) { $SftpPort = 22 }
     $SftpUser = ''
     while (-not $SftpUser) {
-        $SftpUser = Read-Host 'SFTP username:'
+        $SftpUser = Read-Host 'SFTP username'
     }
     do {
-        $SecurePw = Read-Host 'SFTP password:' -AsSecureString
+        $SecurePw = Read-Host 'SFTP password' -AsSecureString
         $pwLength = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
             [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePw)
         ).Length
@@ -62,13 +62,13 @@ while (-not $credOK) {
 }
 
 # 2  Paths
-$RemotePath = Read-Host 'Remote SOURCE path ( / or /subfolder ):'
+$RemotePath = Read-Host 'Remote SOURCE path ( / or /subfolder )'
 if (-not $RemotePath) { $RemotePath = '/' }
 if (-not $RemotePath.StartsWith('/')) { $RemotePath = "/$RemotePath" }
 
 $validDest = $false
 while (-not $validDest) {
-    $LocalRoot = Read-Host 'Local DESTINATION folder (e.g. D:\Backups\MySite):'
+    $LocalRoot = Read-Host 'Local DESTINATION folder (e.g. D:\Backups\MySite)'
     if (-not $LocalRoot) {
         Write-Warning 'Destination path is required.'
         continue
