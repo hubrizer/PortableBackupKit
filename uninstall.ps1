@@ -3,7 +3,6 @@
 # --- constants ----------------------------------------
 $KitDir   = $PSScriptRoot
 $TaskName = 'Portable Rclone Incremental Backup'
-$BackupPS = Join-Path $KitDir 'backup.ps1'
 $RcloneCF = Join-Path $KitDir 'rclone.conf'
 # ------------------------------------------------------
 
@@ -19,7 +18,7 @@ try {
     Write-Host "INFO Task '$TaskName' not found (already removed)."
 }
 
-# 2. Optionally remove rclone.conf and backup.ps1
+# 2. Optionally remove rclone.conf
 if ((Read-Host 'Delete rclone.conf for a fresh setup? (y/N)') -match '^[Yy]$') {
     if (Test-Path $RcloneCF) { Remove-Item $RcloneCF -Force }
     Write-Host 'OK  rclone.conf removed.'
@@ -27,12 +26,6 @@ if ((Read-Host 'Delete rclone.conf for a fresh setup? (y/N)') -match '^[Yy]$') {
     Write-Host 'Keeping rclone.conf.'
 }
 
-if ((Read-Host 'Delete backup.ps1 as well? (y/N)') -match '^[Yy]$') {
-    if (Test-Path $BackupPS) { Remove-Item $BackupPS -Force }
-    Write-Host 'OK  backup.ps1 removed.'
-} else {
-    Write-Host 'Keeping backup.ps1.'
-}
 
 # 3. Delete local backup data?
 function Get-IniSection($Path, $Section) {

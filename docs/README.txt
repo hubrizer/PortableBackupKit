@@ -61,8 +61,8 @@ To watch a job in real time:
 Uninstall
 ---------
 Run `uninstall.ps1` to remove the Task-Scheduler job "Portable Rclone Incremental Backup".
-The script can also delete `rclone.conf`, `backup.ps1`, `last-run.txt`,
-`backup.log` and any local backup folders.
+The script can also delete `rclone.conf`, `last-run.txt`, `backup.log` and any local backup folders.
+`backup.ps1` is now static and is always kept.
 Each item is removed only when you respond **Y** to its prompt.
 Deleting the entire PortableBackupKit folder is only needed after
 running the script.
@@ -78,6 +78,7 @@ Notes
 * Quoted SFTP parameters so passwords with spaces or special characters work.
 * `ERROR : Attempt 2/3 succeeded` in `backup.log` means the first try failed but
   a retry was successful.
+* `uninstall.ps1` no longer offers to delete `backup.ps1`.
 
 
 SFTP CREDENTIALS
