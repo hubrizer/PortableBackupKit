@@ -1,3 +1,4 @@
 rclone.conf
 $LocalRoot/
 .idea/
+last-run.txt
