@@ -50,6 +50,10 @@ if (Test-Path $RcloneCF) {
     $arc = $cfg['ArchiveRoot']
 } else { $cur=$null; $arc=$null }
 
+# Derive paths for cleanup files
+$LastRunFile = Join-Path $KitDir 'last-run.txt'
+$LogFile     = if ($arc) { Join-Path (Split-Path $arc -Parent) 'backup.log' } else { $null }
+
 if ($cur) {
     $root = Split-Path $arc -Parent
     if (Read-Host "Delete ALL local backup data at '$root'? (y/N)" -match '^[Yy]$') {
@@ -60,6 +64,11 @@ if ($cur) {
     }
 } else {
     Write-Host "INFO Could not auto-detect backup folders (rclone.conf missing or section removed)."
+}
+
+if (Read-Host 'Delete last-run.txt and backup.log? (y/N)' -match '^[Yy]$') {
+    foreach ($f in @($LastRunFile,$LogFile)) { if ($f -and (Test-Path $f)) { Remove-Item $f -Force } }
+    Write-Host 'OK  Log/tracker files removed.'
 }
 
 Write-Host "`nUninstall finished. You may now delete the PortableBackupKit folder if you wish."
