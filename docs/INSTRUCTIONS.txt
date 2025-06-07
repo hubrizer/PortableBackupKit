@@ -83,6 +83,10 @@ Changing Schedule Later
 Run **setup.ps1** again; it overwrites the Task Scheduler trigger and
 updates rclone.conf but keeps existing credentials.
 
+Updating
+--------
+Run **update.ps1** at any time to pull the latest toolkit files from the repository.
+
 Troubleshooting
 ---------------
 • Log file lives next to *archive\…* as `backup.log`.

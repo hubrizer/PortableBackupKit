@@ -9,6 +9,7 @@ No installation is required; simply unzip the folder and run the setup wizard.
 - `backup.ps1` – job script run by Task Scheduler. Mirrors the remote into `current`, stores dated snapshots under `archive/` and optionally sends a Brevo email report.
 - `restore.ps1` – restore wizard that uploads a selected snapshot back to the SFTP server.
 - `uninstall.ps1` – removes the scheduled task and can delete configuration files and local backups.
+- `update.ps1` – pulls the latest version of the toolkit from this repository.
 
 ## Quick start
 
