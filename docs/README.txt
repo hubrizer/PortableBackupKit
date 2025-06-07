@@ -44,8 +44,7 @@ Quick start
        Set-ExecutionPolicy -Scope Process Bypass -Force .\setup.ps1
 4. Answer the prompts
    (the wizard re-prompts if the server, username or password are blank.
-    Credentials are tested before continuing. Press **Enter** for the remote
-    path to use `/` and be sure the destination folder is a valid local path.)
+    Credentials are tested before continuing. Press **Enter** for the remote path to use `/`. **You must type a destination folder; the wizard re-prompts until it is valid.**
 
 WPX.NET: create an SFTP user
 ----------------------------

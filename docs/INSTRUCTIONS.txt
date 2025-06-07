@@ -38,7 +38,7 @@ If you host on WPX.NET you will need an SFTP login for the backup kit.
    • **Remote source path** – `/` for entire account or `/public_html`\
      *(press Enter for `/`)*
    • **Local destination folder** – e.g. `D:\Backups\MySite`\
-     *(must be a valid local path)*
+     *(must be a valid local path and cannot be blank; the wizard re-prompts until valid)*
    • **Schedule**    – choose:
        1 = daily at HH:MM
        2 = every N hours
