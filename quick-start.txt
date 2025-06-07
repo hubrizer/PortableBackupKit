@@ -1,0 +1,12 @@
+PortableBackupKit Quick Start
+=============================
+
+1. Extract the folder to any location, for example `C:\Tools\PortableBackupKit`.
+2. Open an **elevated** PowerShell window in that folder.
+3. Run:
+       Set-ExecutionPolicy -Scope Process Bypass -Force
+       .\setup.ps1
+4. Answer the prompts to configure your SFTP backup.
+5. The scheduled task runs automatically on the schedule you choose.
+
+For full details and troubleshooting, see `docs/README.txt` and `docs/INSTRUCTIONS.txt`.
