@@ -19,8 +19,8 @@ function Test-SftpCredential($SftpHost,$Port,$User,$SecurePw) {
     $plain = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
         [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePw))
     try {
-        & $RcloneExe lsf ':sftp:/' --sftp-host=$SftpHost --sftp-port=$Port `
-            --sftp-user=$User --sftp-pass=$plain 1>$null 2>$null
+        & $RcloneExe lsf ':sftp:/' --sftp-host="$SftpHost" --sftp-port="$Port" `
+            --sftp-user="$User" --sftp-pass="$plain" 1>$null 2>$null
         return ($LASTEXITCODE -eq 0)
     } catch {
         return $false
@@ -142,9 +142,9 @@ $Obscured = & $RcloneExe obscure $PlainPw
 $RemoteName = 'remote'
 $env:RCLONE_CONFIG = $RcloneConf
 if (Test-Path $RcloneConf) {
-    & $RcloneExe config update $RemoteName host=$SftpHost port=$SftpPort user=$SftpUser pass=$Obscured
+    & $RcloneExe config update $RemoteName host="$SftpHost" port="$SftpPort" user="$SftpUser" pass="$Obscured"
 } else {
-    & $RcloneExe config create $RemoteName sftp host=$SftpHost port=$SftpPort user=$SftpUser pass=$Obscured
+    & $RcloneExe config create $RemoteName sftp host="$SftpHost" port="$SftpPort" user="$SftpUser" pass="$Obscured"
 }
 
 # 7  Store settings in rclone.conf

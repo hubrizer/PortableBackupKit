@@ -35,6 +35,7 @@ If you host on WPX.NET you will need an SFTP login for the backup kit.
    • **Password**    – typed invisibly
      (the wizard re-prompts if server, user or password are blank)
      *Credentials are tested before continuing*
+     (spaces and special characters are supported)
    • **Remote source path** – `/` for entire account or `/public_html`\
      *(press Enter for `/`)*
    • **Local destination folder** – e.g. `D:\Backups\MySite`\
