@@ -31,6 +31,8 @@ Step-by-Step Setup
        2 = every N hours
        3 = weekly on specific days
    • **Time/Interval** – depends on option above
+   • **Retention days** – how long to keep snapshots (7–30)
+   • **Brevo sender name** – display name for e-mails [Backup Bot]
 
 6. When the wizard finishes it reports:
    • Settings saved to rclone.conf
@@ -58,9 +60,9 @@ Adjusting Retention
 -------------------
 Open **rclone.conf** and edit the `[backup]` section:
 
-    RetentionDays = 30
+    RetentionDays = 7
 
-Change the value to any integer. Snapshots older than that many days are deleted each run.
+Change the value to any integer up to 30. Snapshots older than that many days are deleted each run.
 
 Changing Schedule Later
 -----------------------
