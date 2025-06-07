@@ -14,7 +14,7 @@ Main points
 * Keeps snapshots for 7 days by default (configurable up to 30)
 * Runs on a schedule you choose (daily, every N hours, or weekly)
 * Shows live progress in the console and in backup.log
-* Optional Brevo e-mail when a run finishes, including remote type, host, port and user
+* Optional Brevo e-mail when a run finishes, summarizing remote info, files transferred and data volume
 
 Folder layout
 -------------
