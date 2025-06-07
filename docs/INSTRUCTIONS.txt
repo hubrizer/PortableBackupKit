@@ -33,6 +33,7 @@ If you host on WPX.NET you will need an SFTP login for the backup kit.
    • **Port**        – 22 (default) or 2222 for WPX
    • **Username**    – your SFTP login
    • **Password**    – typed invisibly
+     (the wizard will re-prompt if server, user or password are blank)
    • **Remote source path** – `/` for entire account or `/public_html`
    • **Local destination folder** – e.g. `D:\Backups\MySite`
    • **Schedule**    – choose:

@@ -43,6 +43,7 @@ Quick start
 3. Run:
        Set-ExecutionPolicy -Scope Process Bypass -Force .\setup.ps1
 4. Answer the prompts
+   (the wizard re-prompts if the server, username or password are blank)
 
 WPX.NET: create an SFTP user
 ----------------------------
@@ -68,6 +69,8 @@ See INSTRUCTIONS.txt for step-by-step details and troubleshooting.
 SFTP CREDENTIALS
 ----------
 FTP Settings
+
+The server, username and password are required; setup re-prompts until all three are provided.
 
 SFTP Server : your_sftp_host or (your_sftp_ip)
 Port : 2222

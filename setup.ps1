@@ -20,10 +20,21 @@ if (-not (Test-Path $RcloneExe)) {
 }
 
 # 1  SFTP credentials
-$SftpHost = Read-Host 'SFTP server (e.g. s20.wpxhosting.com)'
+$SftpHost = ''
+while (-not $SftpHost) {
+    $SftpHost = Read-Host 'SFTP server (e.g. s20.wpxhosting.com)'
+}
 $SftpPort = Read-Host 'Port [22 or 2222 (required by WPX.NET)]'; if (-not $SftpPort) { $SftpPort = 22 }
-$SftpUser = Read-Host 'SFTP username'
-$SecurePw = Read-Host 'SFTP password' -AsSecureString
+$SftpUser = ''
+while (-not $SftpUser) {
+    $SftpUser = Read-Host 'SFTP username'
+}
+do {
+    $SecurePw = Read-Host 'SFTP password' -AsSecureString
+    $pwLength = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
+        [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePw)
+    ).Length
+} while ($pwLength -eq 0)
 
 # 2  Paths
 $RemotePath = Read-Host 'Remote SOURCE path ( / or /subfolder )'
