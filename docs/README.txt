@@ -16,6 +16,8 @@ Main points
 * Shows live progress in the console and in backup.log
 * Optional Brevo e-mail when a run finishes, summarizing remote info, files transferred and data volume
 * `update.ps1` pulls new versions of these scripts via git
+* Uses `--stats-log-level NOTICE` so totals appear in the log and e-mail
+
 
 Folder layout
 -------------

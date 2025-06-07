@@ -62,13 +62,13 @@ while (-not $validDest) {
 # 3  Schedule
 Write-Host "`nChoose backup schedule:"
 Write-Host "  1) Daily at a set time  (default)"
-Write-Host "  2) Every N hours (4 recommended)"
+Write-Host "  2) Every N hours (Defined Interval)"
 Write-Host "  3) Weekly on chosen days"
 $Choice = (Read-Host 'Enter 1, 2, or 3'); if (-not $Choice) { $Choice = '1' }
 
 switch ($Choice) {
     '2' {
-        $Hours = [int](Read-Host 'Interval in HOURS [4]'); if ($Hours -lt 1) { $Hours = 4 }
+        $Hours = [int](Read-Host 'Interval in HOURS [8]'); if ($Hours -lt 1) { $Hours = 8 }
         $Start          = [datetime]::Today                 # first run at 00:00 today
         $Interval       = New-TimeSpan -Hours $Hours
         $RepDuration    = New-TimeSpan -Days 31             # 31-day max allowed
@@ -95,20 +95,20 @@ switch ($Choice) {
     }
 }
 
-$RetentionDays = Read-Host 'Days to keep snapshots [7, max 30]:'
-if (-not $RetentionDays) { $RetentionDays = 7 }
+$RetentionDays = Read-Host 'Days to keep snapshots [3, max 30]'
+if (-not $RetentionDays) { $RetentionDays = 3 }
 $RetentionDays = [int]$RetentionDays
 if ($RetentionDays -gt 30) { $RetentionDays = 30 }
 
 # 5  OPTIONAL Brevo e-mail
-$BrevoKey = Read-Host 'Brevo API key (Enter = skip e-mail):'
+$BrevoKey = Read-Host 'Brevo API key (Enter = skip e-mail)'
 if ($BrevoKey) {
-    $BrevoSender = Read-Host 'Brevo SENDER e-mail from (verified domain):'
-    $BrevoName   = Read-Host 'Brevo SENDER e-mail display name [Backup Bot]:'
-    if (-not $BrevoName) { $BrevoName = 'Backup Bot' }
-    $BrevoTo     = Read-Host 'Destination e-mail for alerts (email address to receive alerts)'
-    $SubjectBase = Read-Host 'Subject prefix [My SFTP Website Backup]:'
-    if (-not $SubjectBase) { $SubjectBase = 'My SFTP Website Backup' }
+    $BrevoSender = Read-Host 'Brevo SENDER e-mail from (e.g. no-reply@yourdomain.com)'
+    $BrevoName   = Read-Host 'Brevo SENDER e-mail display name [Backup Agent]'
+    if (-not $BrevoName) { $BrevoName = 'Backup Agent' }
+    $BrevoTo     = Read-Host 'Destination e-mail for alerts to be sent (your email)'
+    $SubjectBase = Read-Host 'Subject prefix [My Website Backup]'
+    if (-not $SubjectBase) { $SubjectBase = 'My Website Backup' }
 } else {
     $BrevoSender = ''; $BrevoName=''; $BrevoTo = ''; $SubjectBase = ''
 }
