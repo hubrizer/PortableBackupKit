@@ -20,14 +20,14 @@ try {
 }
 
 # 2. Optionally remove rclone.conf and backup.ps1
-if (Read-Host 'Delete rclone.conf for a fresh setup? (y/N)' -match '^[Yy]$') {
+if ((Read-Host 'Delete rclone.conf for a fresh setup? (y/N)') -match '^[Yy]$') {
     if (Test-Path $RcloneCF) { Remove-Item $RcloneCF -Force }
     Write-Host 'OK  rclone.conf removed.'
 } else {
     Write-Host 'Keeping rclone.conf.'
 }
 
-if (Read-Host 'Delete backup.ps1 as well? (y/N)' -match '^[Yy]$') {
+if ((Read-Host 'Delete backup.ps1 as well? (y/N)') -match '^[Yy]$') {
     if (Test-Path $BackupPS) { Remove-Item $BackupPS -Force }
     Write-Host 'OK  backup.ps1 removed.'
 } else {
@@ -63,7 +63,7 @@ $LogFile     = if ($arc) { Join-Path (Split-Path $arc -Parent) 'backup.log' } el
 
 if ($cur) {
     $root = Split-Path $arc -Parent
-    if (Read-Host "Delete ALL local backup data at '$root'? (y/N)" -match '^[Yy]$') {
+    if ((Read-Host "Delete ALL local backup data at '$root'? (y/N)") -match '^[Yy]$') {
         foreach ($p in @($cur,$arc)) { if (Test-Path $p) { Remove-Item $p -Recurse -Force } }
         Write-Host "OK  Local backup folders removed."
     } else {
@@ -73,7 +73,7 @@ if ($cur) {
     Write-Host "INFO Could not auto-detect backup folders (rclone.conf missing or section removed)."
 }
 
-if (Read-Host 'Delete last-run.txt and backup.log? (y/N)' -match '^[Yy]$') {
+if ((Read-Host 'Delete last-run.txt and backup.log? (y/N)') -match '^[Yy]$') {
     foreach ($f in @($LastRunFile,$LogFile)) { if ($f -and (Test-Path $f)) { Remove-Item $f -Force } }
     Write-Host 'OK  Log/tracker files removed.'
 }
