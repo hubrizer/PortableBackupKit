@@ -15,6 +15,7 @@ Main points
 * Runs on a schedule you choose (daily, every N hours, or weekly)
 * Shows live progress in the console and in backup.log
 * Optional Brevo e-mail when a run finishes, summarizing remote info, files transferred and data volume
+* Uses `--stats-log-level NOTICE` so totals appear in the log and e-mail
 
 Folder layout
 -------------

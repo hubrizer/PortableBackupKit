@@ -69,7 +69,8 @@ $LogFile = Join-Path (Split-Path $ArchiveRoot) 'backup.log'
     --links --create-empty-src-dirs `
     --backup-dir="$Archive" `
     --progress --stats=10s --stats-one-line `
-    --log-file="$LogFile" --log-level INFO
+    --log-file="$LogFile" --log-level INFO `
+    --stats-log-level NOTICE
 
 Get-ChildItem $ArchiveRoot -Directory |
     Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-$RetentionDays) } |
