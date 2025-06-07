@@ -8,6 +8,7 @@ These instructions apply to all files in this repository.
 - PowerShell scripts use four spaces for indentation.
 - Keep lines under 120 characters and avoid trailing whitespace.
 - Document any behaviour changes in `docs/README.txt`.
+- Update instructions when needed in `docs/INSTRUCTIONS.txt`.
 
 ## Testing
 
