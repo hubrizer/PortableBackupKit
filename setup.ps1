@@ -3,6 +3,7 @@
     • Live progress output
     • Optional Brevo e-mail alerts
 #>
+# ensure all errors abort the script
 $ErrorActionPreference = 'Stop'
 
 # ─ kit constants ──────────────────────────────────────────────────────
@@ -13,6 +14,15 @@ $BackupPS1   = Join-Path $KitDir 'backup.ps1'
 $TaskName    = 'Portable Rclone Incremental Backup'
 # ─────────────────────────────────────────────────────────────────────
 
+# test SFTP credentials via rclone
+function Test-SftpCredential($Host,$Port,$User,$SecurePw) {
+    $plain = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
+        [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePw))
+    & $RcloneExe lsf ':sftp:/' --sftp-host=$Host --sftp-port=$Port `
+        --sftp-user=$User --sftp-pass=$plain 1>$null 2>$null
+    return ($LASTEXITCODE -eq 0)
+}
+
 Write-Host "`n=== Portable rclone backup setup ===`n"
 if (-not (Test-Path $RcloneExe)) {
     Write-Error "rclone.exe not found in $KitDir."
@@ -20,31 +30,49 @@ if (-not (Test-Path $RcloneExe)) {
 }
 
 # 1  SFTP credentials
-$SftpHost = ''
-while (-not $SftpHost) {
-    $SftpHost = Read-Host 'SFTP server (e.g. s20.wpxhosting.com)'
+$credOK = $false
+while (-not $credOK) {
+    $SftpHost = ''
+    while (-not $SftpHost) {
+        $SftpHost = Read-Host 'SFTP server (e.g. s20.wpxhosting.com)'
+    }
+    $SftpPort = Read-Host 'Port [22 or 2222 (required by WPX.NET)]'; if (-not $SftpPort) { $SftpPort = 22 }
+    $SftpUser = ''
+    while (-not $SftpUser) {
+        $SftpUser = Read-Host 'SFTP username'
+    }
+    do {
+        $SecurePw = Read-Host 'SFTP password' -AsSecureString
+        $pwLength = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
+            [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePw)
+        ).Length
+    } while ($pwLength -eq 0)
+    Write-Host 'Testing SFTP credentials...'
+    if (Test-SftpCredential $SftpHost $SftpPort $SftpUser $SecurePw) {
+        Write-Host 'SFTP login successful.'
+        $credOK = $true
+    } else {
+        Write-Warning 'Login failed. Please re-enter credentials.'
+    }
 }
-$SftpPort = Read-Host 'Port [22 or 2222 (required by WPX.NET)]'; if (-not $SftpPort) { $SftpPort = 22 }
-$SftpUser = ''
-while (-not $SftpUser) {
-    $SftpUser = Read-Host 'SFTP username'
-}
-do {
-    $SecurePw = Read-Host 'SFTP password' -AsSecureString
-    $pwLength = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
-        [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePw)
-    ).Length
-} while ($pwLength -eq 0)
 
 # 2  Paths
 $RemotePath = Read-Host 'Remote SOURCE path ( / or /subfolder )'
 if (-not $RemotePath) { $RemotePath = '/' }
 if (-not $RemotePath.StartsWith('/')) { $RemotePath = "/$RemotePath" }
 
-$LocalRoot = Read-Host 'Local DESTINATION folder (e.g. D:\Backups\MySite)'
-if (-not $LocalRoot) { $LocalRoot = "$HOME\Backups\SFTPBackup" }
-$LocalRoot = [IO.Path]::GetFullPath($LocalRoot)
-New-Item -Path $LocalRoot -ItemType Directory -Force | Out-Null
+$validDest = $false
+while (-not $validDest) {
+    $LocalRoot = Read-Host 'Local DESTINATION folder (e.g. D:\Backups\MySite)'
+    if (-not $LocalRoot) { $LocalRoot = "$HOME\Backups\SFTPBackup" }
+    try {
+        $LocalRoot = [IO.Path]::GetFullPath($LocalRoot)
+        New-Item -Path $LocalRoot -ItemType Directory -Force | Out-Null
+        $validDest = $true
+    } catch {
+        Write-Warning "Invalid path. Please enter a valid destination."
+    }
+}
 
 # 3  Schedule
 Write-Host "`nChoose backup schedule:"
