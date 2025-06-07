@@ -39,19 +39,42 @@ if (-not (Test-Path $RcloneExe)) {
 }
 
 $BackupDefaults = @{}
+$RemoteDefaults = @{}
+$defHost = ''
+$defPort = 22
+$defUser = ''
+$defRemotePath = '/'
+$defLocalRoot = ''
 if (Test-Path $RcloneConf) {
     $BackupDefaults = Get-IniSection $RcloneConf 'backup'
+    $RemoteDefaults = Get-IniSection $RcloneConf 'remote'
+    if ($RemoteDefaults['host']) { $defHost = $RemoteDefaults['host'] }
+    if ($RemoteDefaults['port']) { $defPort = [int]$RemoteDefaults['port'] }
+    if ($RemoteDefaults['user']) { $defUser = $RemoteDefaults['user'] }
+    if ($BackupDefaults['Remote']) {
+        $parts = $BackupDefaults['Remote'] -split ':',2
+        if ($parts.Count -gt 1) { $defRemotePath = $parts[1] }
+    }
+    if ($BackupDefaults['Current']) {
+        $defLocalRoot = Split-Path $BackupDefaults['Current'] -Parent
+    } elseif ($BackupDefaults['ArchiveRoot']) {
+        $defLocalRoot = Split-Path $BackupDefaults['ArchiveRoot'] -Parent
+    }
 }
 
 # 1  SFTP credentials
 $SftpHost = ''
 while (-not $SftpHost) {
-    $SftpHost = Read-Host 'SFTP server (e.g. s20.wpxhosting.com)'
+    $prompt = if ($defHost) { "SFTP server [$defHost]" } else { 'SFTP server (e.g. s20.wpxhosting.com)' }
+    $SftpHost = Read-Host $prompt
+    if (-not $SftpHost) { $SftpHost = $defHost }
 }
-$SftpPort = Read-Host 'Port [22] (2222 is required by WPX.NET)'; if (-not $SftpPort) { $SftpPort = 22 }
+$SftpPort = Read-Host "Port [$defPort] (2222 is required by WPX.NET)"; if (-not $SftpPort) { $SftpPort = $defPort }
 $SftpUser = ''
 while (-not $SftpUser) {
-    $SftpUser = Read-Host 'SFTP username'
+    $prompt = if ($defUser) { "SFTP username [$defUser]" } else { 'SFTP username' }
+    $SftpUser = Read-Host $prompt
+    if (-not $SftpUser) { $SftpUser = $defUser }
 }
 do {
     $SecurePw = Read-Host 'SFTP password' -AsSecureString
@@ -61,13 +84,17 @@ do {
 } while ($pwLength -eq 0)
 
 # 2  Paths
-$RemotePath = Read-Host 'Remote SOURCE path ( / or /subfolder )'
+$RemotePath = Read-Host "Remote SOURCE path ( / or /subfolder ) [$defRemotePath]"
+if (-not $RemotePath) { $RemotePath = $defRemotePath }
 if (-not $RemotePath) { $RemotePath = '/' }
 if (-not $RemotePath.StartsWith('/')) { $RemotePath = "/$RemotePath" }
 
 $validDest = $false
 while (-not $validDest) {
-    $LocalRoot = Read-Host 'Local DESTINATION folder (e.g. D:\Backups\MySite)'
+    $prompt = "Local DESTINATION folder (e.g. D:\\Backups\\MySite)"
+    if ($defLocalRoot) { $prompt += " [$defLocalRoot]" }
+    $LocalRoot = Read-Host $prompt
+    if (-not $LocalRoot) { $LocalRoot = $defLocalRoot }
     if (-not $LocalRoot) {
         Write-Warning 'Destination path is required.'
         continue
