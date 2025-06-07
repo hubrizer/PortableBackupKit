@@ -18,9 +18,13 @@ $TaskName    = 'Portable Rclone Incremental Backup'
 function Test-SftpCredential($SftpHost,$Port,$User,$SecurePw) {
     $plain = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
         [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePw))
-    & $RcloneExe lsf ':sftp:/' --sftp-host=$SftpHost --sftp-port=$Port `
-        --sftp-user=$User --sftp-pass=$plain 1>$null 2>$null
-    return ($LASTEXITCODE -eq 0)
+    try {
+        & $RcloneExe lsf ':sftp:/' --sftp-host=$SftpHost --sftp-port=$Port `
+            --sftp-user=$User --sftp-pass=$plain 1>$null 2>$null
+        return ($LASTEXITCODE -eq 0)
+    } catch {
+        return $false
+    }
 }
 
 Write-Host "`n=== Portable rclone backup setup ===`n"
