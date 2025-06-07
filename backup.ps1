@@ -31,6 +31,14 @@ if (-not $cfg) {
     exit 1
 }
 
+# pull remote connection info
+$RemoteName = ($cfg['Remote'] -split ':')[0]
+$remoteCfg = Get-IniSection $ConfPath $RemoteName
+$remoteType = if ($remoteCfg['type']) { $remoteCfg['type'] } else { '?' }
+$remoteHost = if ($remoteCfg['host']) { $remoteCfg['host'] } else { '?' }
+$remotePort = if ($remoteCfg['port']) { $remoteCfg['port'] } else { '?' }
+$remoteUser = if ($remoteCfg['user']) { $remoteCfg['user'] } else { '?' }
+
 $Remote        = $cfg['Remote']
 $Current       = $cfg['Current']
 $ArchiveRoot   = $cfg['ArchiveRoot']
@@ -105,7 +113,11 @@ if ($BrevoKey -and $BrevoSender -and $BrevoTo) {
         "Backup run: $Status",
         "Start    : $Start",
         "End      : $End",
-        "Duration : $([math]::Round($Duration.TotalMinutes,2)) minutes"
+        "Duration : $([math]::Round($Duration.TotalMinutes,2)) minutes",
+        "Remote type: $remoteType",
+        "Remote host: $remoteHost",
+        "Remote port: $remotePort",
+        "Remote user: $remoteUser"
     )
     if ($LastRun) { $BodyLines += "Previous : $LastRun" }
     $BodyLines += "Current dir : $Current"
