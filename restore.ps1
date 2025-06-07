@@ -10,28 +10,17 @@ if (-not (Test-Path $RcloneExe)) {
 }
 
 function Prompt-SftpCredential {
-    $credOK = $false
-    while (-not $credOK) {
-        $host = ''
-        while (-not $host) { $host = Read-Host 'SFTP server' }
-        $port = Read-Host 'Port [22]'; if (-not $port) { $port = 22 }
-        $user = ''
-        while (-not $user) { $user = Read-Host 'SFTP username' }
-        do {
-            $securePw = Read-Host 'SFTP password' -AsSecureString
-            $len = [Runtime.InteropServices.Marshal]::PtrToStringAuto([
-                Runtime.InteropServices.Marshal]::SecureStringToBSTR($securePw)
-            ).Length
-        } while ($len -eq 0)
-        Write-Host 'Testing credentials...'
-        $plain    = [Runtime.InteropServices.Marshal]::PtrToStringAuto([
-                        Runtime.InteropServices.Marshal]::SecureStringToBSTR($securePw))
-        $obscured = & $RcloneExe obscure $plain
-        & $RcloneExe lsf ':sftp:/' --sftp-host="$host" --sftp-port="$port" \
-            --sftp-user="$user" --sftp-pass="$obscured" 1>$null 2>$null
-        if ($LASTEXITCODE -eq 0) { Write-Host 'SFTP login OK.'; $credOK=$true }
-        else { Write-Warning 'Login failed. Please re-enter.' }
-    }
+    $host = ''
+    while (-not $host) { $host = Read-Host 'SFTP server' }
+    $port = Read-Host 'Port [22]'; if (-not $port) { $port = 22 }
+    $user = ''
+    while (-not $user) { $user = Read-Host 'SFTP username' }
+    do {
+        $securePw = Read-Host 'SFTP password' -AsSecureString
+        $len = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
+            [Runtime.InteropServices.Marshal]::SecureStringToBSTR($securePw)
+        ).Length
+    } while ($len -eq 0)
     return @{ host=$host; port=$port; user=$user; securePw=$securePw }
 }
 

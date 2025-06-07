@@ -14,19 +14,6 @@ $BackupPS1   = Join-Path $KitDir 'backup.ps1'
 $TaskName    = 'Portable Rclone Incremental Backup'
 # ─────────────────────────────────────────────────────────────────────
 
-# test SFTP credentials via rclone
-function Test-SftpCredential($SftpHost,$Port,$User,$SecurePw) {
-    $plain    = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
-                   [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePw))
-    $obscured = & $RcloneExe obscure $plain
-    try {
-        & $RcloneExe lsf ':sftp:/' --sftp-host="$SftpHost" --sftp-port="$Port" `
-            --sftp-user="$User" --sftp-pass="$obscured" 1>$null 2>$null
-        return ($LASTEXITCODE -eq 0)
-    } catch {
-        return $false
-    }
-}
 
 Write-Host "`n=== Portable rclone backup setup ===`n"
 if (-not (Test-Path $RcloneExe)) {
@@ -35,31 +22,21 @@ if (-not (Test-Path $RcloneExe)) {
 }
 
 # 1  SFTP credentials
-$credOK = $false
-while (-not $credOK) {
-    $SftpHost = ''
-    while (-not $SftpHost) {
-        $SftpHost = Read-Host 'SFTP server (e.g. s20.wpxhosting.com)'
-    }
-    $SftpPort = Read-Host 'Port [22] (2222 is required by WPX.NET)'; if (-not $SftpPort) { $SftpPort = 22 }
-    $SftpUser = ''
-    while (-not $SftpUser) {
-        $SftpUser = Read-Host 'SFTP username'
-    }
-    do {
-        $SecurePw = Read-Host 'SFTP password' -AsSecureString
-        $pwLength = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
-            [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePw)
-        ).Length
-    } while ($pwLength -eq 0)
-    Write-Host 'Testing SFTP credentials...'
-    if (Test-SftpCredential -SftpHost $SftpHost -Port $SftpPort -User $SftpUser -SecurePw $SecurePw) {
-        Write-Host 'SFTP login successful.'
-        $credOK = $true
-    } else {
-        Write-Warning 'Login failed. Please re-enter credentials.'
-    }
+$SftpHost = ''
+while (-not $SftpHost) {
+    $SftpHost = Read-Host 'SFTP server (e.g. s20.wpxhosting.com)'
 }
+$SftpPort = Read-Host 'Port [22] (2222 is required by WPX.NET)'; if (-not $SftpPort) { $SftpPort = 22 }
+$SftpUser = ''
+while (-not $SftpUser) {
+    $SftpUser = Read-Host 'SFTP username'
+}
+do {
+    $SecurePw = Read-Host 'SFTP password' -AsSecureString
+    $pwLength = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
+        [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePw)
+    ).Length
+} while ($pwLength -eq 0)
 
 # 2  Paths
 $RemotePath = Read-Host 'Remote SOURCE path ( / or /subfolder )'
