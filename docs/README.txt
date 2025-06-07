@@ -44,6 +44,13 @@ Quick start
        Set-ExecutionPolicy -Scope Process Bypass -Force .\setup.ps1
 4. Answer the prompts
 
+WPX.NET: create an SFTP user
+----------------------------
+1. Log in at `my.wpx.net` and open **Manage Service** for your hosting plan.
+2. Go to **SFTP/FTP Users** and choose **Add new user**.
+3. Pick a username, password and set the root path to back up (e.g. `/public_html`).
+4. Save the user. WPX listens on port `2222` for SFTP, so use that in setup.
+
 Live log
 --------
 To watch a job in real time:
