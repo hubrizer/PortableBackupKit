@@ -104,6 +104,18 @@ if (Test-Path $LogFile) {
     }
     $Changes = $RunLines | Where-Object { $_ -match ': (Copied|Deleted|Updated|Moved)' } |
                ForEach-Object { $_ -replace '^.+INFO\s+:\s+', '' }
+
+    $TransferredBytes = $null
+    $TransferredFiles = $null
+    $statLines = $RunLines | Where-Object { $_ -match 'Transferred:' } | Select-Object -Last 5
+    foreach ($line in $statLines) {
+        if (-not $TransferredBytes -and $line -match 'Transferred:\s+([0-9\.]+\s+[A-Za-z]+B)') {
+            $TransferredBytes = $matches[1]
+        }
+        if (-not $TransferredFiles -and $line -match 'Transferred:\s+([0-9]+)\s+/') {
+            $TransferredFiles = [int]$matches[1]
+        }
+    }
 }
 
 if ($BrevoKey -and $BrevoSender -and $BrevoTo) {
@@ -122,10 +134,14 @@ if ($BrevoKey -and $BrevoSender -and $BrevoTo) {
     if ($LastRun) { $BodyLines += "Previous : $LastRun" }
     $BodyLines += "Current dir : $Current"
     $BodyLines += "Snapshot dir: $Archive"
-    if ($Changes.Count -gt 0) {
+    if ($TransferredFiles -ne $null -or $TransferredBytes -ne $null) {
         $BodyLines += ""
-        $BodyLines += "Files updated:"
-        $BodyLines += $Changes
+        if ($TransferredFiles -ne $null) {
+            $BodyLines += "Files transferred: $TransferredFiles"
+        }
+        if ($TransferredBytes -ne $null) {
+            $BodyLines += "Data transferred : $TransferredBytes"
+        }
     }
     $BodyLines += ""
     $BodyLines += "Log file: $LogFile"

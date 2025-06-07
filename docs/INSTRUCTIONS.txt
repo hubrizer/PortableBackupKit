@@ -46,6 +46,7 @@ If you host on WPX.NET you will need an SFTP login for the backup kit.
    • **Time/Interval** – depends on option above
    • **Retention days** – how long to keep snapshots (7–30)
    • **Brevo sender name** – display name for e-mails [Backup Bot]
+   • E-mail summary shows only total files and data transferred
 
 6. When the wizard finishes it reports:
    • Settings saved to rclone.conf
