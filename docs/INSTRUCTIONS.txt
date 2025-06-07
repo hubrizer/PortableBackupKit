@@ -97,3 +97,9 @@ Need a full restore?
 2. Run `backup.ps1` to re-sync the restored content to the SFTP server.
 
 Enjoy safe, incremental backups!  🙂
+
+Uninstalling
+------------
+Run `uninstall.ps1` from the kit folder to remove the scheduled job and any local
+data. The script confirms each deletion individually, so files, logs and backup
+folders are removed only when you reply **Y**.
