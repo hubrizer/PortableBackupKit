@@ -73,6 +73,8 @@ Notes
 * `setup.ps1` now uses the parameter `-SftpHost` instead of the reserved
   name `-Host`. This avoids a "Variable not writable" error when entering
   SFTP credentials.
+* The credential test no longer aborts the wizard with a `NativeCommandError`
+  when rclone reports missing config or a login failure.
 
 
 SFTP CREDENTIALS
