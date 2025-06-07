@@ -49,6 +49,11 @@ $BrevoKey      = $cfg['BrevoKey']
 $BrevoSender   = $cfg['BrevoSender']
 $BrevoTo       = $cfg['BrevoTo']
 $SubjectBase   = $cfg['SubjectBase']
+$Retries         = if ($cfg['Retries']) { [int]$cfg['Retries'] } else { 3 }
+$RetrySleep      = if ($cfg['RetrySleep']) { [int]$cfg['RetrySleep'] } else { 30 }
+$LowLevelRetries = if ($cfg['LowLevelRetries']) { [int]$cfg['LowLevelRetries'] } else { 10 }
+$TimeoutSec      = if ($cfg['TimeoutSec']) { [int]$cfg['TimeoutSec'] } else { 300 }
+$ConnectTimeout  = if ($cfg['ConnectTimeout']) { [int]$cfg['ConnectTimeout'] } else { 30 }
 
 $env:RCLONE_CONFIG = $ConfPath
 $Rclone = Join-Path $PSScriptRoot 'rclone.exe'
@@ -70,7 +75,10 @@ $LogFile = Join-Path (Split-Path $ArchiveRoot) 'backup.log'
     --backup-dir="$Archive" `
     --progress --stats=10s --stats-one-line `
     --log-file="$LogFile" --log-level INFO `
-    --stats-log-level NOTICE
+    --stats-log-level NOTICE `
+    --retries $Retries --retries-sleep ${RetrySleep}s `
+    --low-level-retries $LowLevelRetries `
+    --timeout ${TimeoutSec}s --contimeout ${ConnectTimeout}s
 
 Get-ChildItem $ArchiveRoot -Directory |
     Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-$RetentionDays) } |

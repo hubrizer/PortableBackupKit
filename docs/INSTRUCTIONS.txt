@@ -45,6 +45,11 @@ If you host on WPX.NET you will need an SFTP login for the backup kit.
        3 = weekly on specific days
    • **Time/Interval** – depends on option above
    • **Retention days** – how long to keep snapshots (7–30)
+   • **Retries** – times to retry a failed transfer [3]
+   • **Retry wait** – seconds to pause between retries [30]
+   • **Low-level retries** – network retry count [10]
+   • **I/O timeout** – seconds before a stalled transfer fails [300]
+   • **Connect timeout** – seconds to wait for a connection [30]
    • **Brevo sender name** – display name for e-mails [Backup Bot]
    • E-mail summary shows only total files and data transferred
    • backup.ps1 runs rclone with `--stats-log-level NOTICE` so those totals are logged

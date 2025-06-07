@@ -95,10 +95,23 @@ switch ($Choice) {
     }
 }
 
+
 $RetentionDays = Read-Host 'Days to keep snapshots [3, max 30]'
 if (-not $RetentionDays) { $RetentionDays = 3 }
 $RetentionDays = [int]$RetentionDays
 if ($RetentionDays -gt 30) { $RetentionDays = 30 }
+
+# 4  Reliability settings
+$Retries = Read-Host 'Retry attempts [3]'
+if (-not $Retries) { $Retries = 3 }
+$RetrySleep = Read-Host 'Seconds to wait between retries [30]'
+if (-not $RetrySleep) { $RetrySleep = 30 }
+$LowLevelRetries = Read-Host 'Low-level retries [10]'
+if (-not $LowLevelRetries) { $LowLevelRetries = 10 }
+$TimeoutSec = Read-Host 'I/O timeout in seconds [300]'
+if (-not $TimeoutSec) { $TimeoutSec = 300 }
+$ConnectTimeout = Read-Host 'Connect timeout in seconds [30]'
+if (-not $ConnectTimeout) { $ConnectTimeout = 30 }
 
 # 5  OPTIONAL Brevo e-mail
 $BrevoKey = Read-Host 'Brevo API key (Enter = skip e-mail)'
@@ -138,6 +151,11 @@ Remote        = $RemoteSpec
 Current       = $LocalRoot\current
 ArchiveRoot   = $LocalRoot\archive
 RetentionDays = $RetentionDays
+Retries       = $Retries
+RetrySleep    = $RetrySleep
+LowLevelRetries = $LowLevelRetries
+TimeoutSec    = $TimeoutSec
+ConnectTimeout = $ConnectTimeout
 BrevoKey      = $BrevoKey
 BrevoSender   = $BrevoSender
 BrevoName     = $BrevoName

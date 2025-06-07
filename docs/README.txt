@@ -17,6 +17,7 @@ Main points
 * Optional Brevo e-mail when a run finishes, summarizing remote info, files transferred and data volume
 * `update.ps1` pulls new versions of these scripts via git
 * Uses `--stats-log-level NOTICE` so totals appear in the log and e-mail
+* Setup lets you set timeouts and retry counts to avoid stalled transfers
 
 
 Folder layout
@@ -82,6 +83,7 @@ Notes
 * Run `Set-ExecutionPolicy` and `./setup.ps1` as two commands or join them with a semicolon.
 * `setup.ps1` now checks if the remote entry exists in `rclone.conf` before updating.
   When missing, it runs `config create` instead of `config update`.
+* Reliability options (timeouts and retries) are stored in `rclone.conf`
 
 
 SFTP CREDENTIALS
