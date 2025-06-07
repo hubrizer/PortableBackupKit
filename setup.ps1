@@ -64,7 +64,10 @@ if (-not $RemotePath.StartsWith('/')) { $RemotePath = "/$RemotePath" }
 $validDest = $false
 while (-not $validDest) {
     $LocalRoot = Read-Host 'Local DESTINATION folder (e.g. D:\Backups\MySite)'
-    if (-not $LocalRoot) { $LocalRoot = "$HOME\Backups\SFTPBackup" }
+    if (-not $LocalRoot) {
+        Write-Warning 'Destination path is required.'
+        continue
+    }
     try {
         $LocalRoot = [IO.Path]::GetFullPath($LocalRoot)
         New-Item -Path $LocalRoot -ItemType Directory -Force | Out-Null
