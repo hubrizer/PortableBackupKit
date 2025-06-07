@@ -61,6 +61,21 @@ Get-ChildItem $ArchiveRoot -Directory |
     Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-$RetentionDays) } |
     Remove-Item -Recurse -Force
 
+# Cull old log entries older than the retention period
+if (Test-Path $LogFile) {
+    $Cutoff    = (Get-Date).AddDays(-$RetentionDays)
+    $TempLog   = "$LogFile.tmp"
+    Get-Content $LogFile | Where-Object {
+        if ($_ -match '^(\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2})') {
+            $d = [datetime]::ParseExact($matches[1], 'yyyy/MM/dd HH:mm:ss', $null)
+            $d -ge $Cutoff
+        } else {
+            $true
+        }
+    } | Set-Content $TempLog
+    Move-Item $TempLog $LogFile -Force
+}
+
 $End = Get-Date
 if ($BrevoKey -and $BrevoSender -and $BrevoTo) {
     $Status  = if ($LASTEXITCODE -eq 0) { 'SUCCESS' } else { 'FAIL' }
