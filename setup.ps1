@@ -38,15 +38,15 @@ $credOK = $false
 while (-not $credOK) {
     $SftpHost = ''
     while (-not $SftpHost) {
-        $SftpHost = Read-Host 'SFTP server (e.g. s20.wpxhosting.com)'
+        $SftpHost = Read-Host 'SFTP server (e.g. s20.wpxhosting.com):'
     }
-    $SftpPort = Read-Host 'Port [22 or 2222 (required by WPX.NET)]'; if (-not $SftpPort) { $SftpPort = 22 }
+    $SftpPort = Read-Host 'Port [22] (2222 is required by WPX.NET):'; if (-not $SftpPort) { $SftpPort = 22 }
     $SftpUser = ''
     while (-not $SftpUser) {
-        $SftpUser = Read-Host 'SFTP username'
+        $SftpUser = Read-Host 'SFTP username:'
     }
     do {
-        $SecurePw = Read-Host 'SFTP password' -AsSecureString
+        $SecurePw = Read-Host 'SFTP password:' -AsSecureString
         $pwLength = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
             [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePw)
         ).Length
@@ -61,13 +61,13 @@ while (-not $credOK) {
 }
 
 # 2  Paths
-$RemotePath = Read-Host 'Remote SOURCE path ( / or /subfolder )'
+$RemotePath = Read-Host 'Remote SOURCE path ( / or /subfolder ):'
 if (-not $RemotePath) { $RemotePath = '/' }
 if (-not $RemotePath.StartsWith('/')) { $RemotePath = "/$RemotePath" }
 
 $validDest = $false
 while (-not $validDest) {
-    $LocalRoot = Read-Host 'Local DESTINATION folder (e.g. D:\Backups\MySite)'
+    $LocalRoot = Read-Host 'Local DESTINATION folder (e.g. D:\Backups\MySite):'
     if (-not $LocalRoot) {
         Write-Warning 'Destination path is required.'
         continue
@@ -117,20 +117,20 @@ switch ($Choice) {
     }
 }
 
-$RetentionDays = Read-Host 'Days to keep snapshots [7, max 30]'
+$RetentionDays = Read-Host 'Days to keep snapshots [7, max 30]:'
 if (-not $RetentionDays) { $RetentionDays = 7 }
 $RetentionDays = [int]$RetentionDays
 if ($RetentionDays -gt 30) { $RetentionDays = 30 }
 
 # 5  OPTIONAL Brevo e-mail
-$BrevoKey = Read-Host 'Brevo API key (Enter = skip e-mail)'
+$BrevoKey = Read-Host 'Brevo API key (Enter = skip e-mail):'
 if ($BrevoKey) {
-    $BrevoSender = Read-Host 'Brevo SENDER e-mail (verified domain)'
-    $BrevoName   = Read-Host 'Brevo SENDER display name [Backup Bot]'
+    $BrevoSender = Read-Host 'Brevo SENDER e-mail from (verified domain):'
+    $BrevoName   = Read-Host 'Brevo SENDER e-mail display name [Backup Bot]:'
     if (-not $BrevoName) { $BrevoName = 'Backup Bot' }
     $BrevoTo     = Read-Host 'Destination e-mail for alerts (email address to receive alerts)'
-    $SubjectBase = Read-Host 'Subject prefix [My SFTP Backup]'
-    if (-not $SubjectBase) { $SubjectBase = 'My SFTP Backup' }
+    $SubjectBase = Read-Host 'Subject prefix [My SFTP Website Backup]:'
+    if (-not $SubjectBase) { $SubjectBase = 'My SFTP Website Backup' }
 } else {
     $BrevoSender = ''; $BrevoName=''; $BrevoTo = ''; $SubjectBase = ''
 }
