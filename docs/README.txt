@@ -44,7 +44,7 @@ Quick start
        Set-ExecutionPolicy -Scope Process Bypass -Force .\setup.ps1
 4. Answer the prompts
    (the wizard re-prompts if the server, username or password are blank.
-    Credentials are tested before continuing. Press **Enter** for the remote path to use `/`. **You must type a destination folder; the wizard re-prompts until it is valid.**
+    Press **Enter** for the remote path to use `/`. A destination folder is required and re-prompts until valid.
 
 WPX.NET: create an SFTP user
 ----------------------------
@@ -73,9 +73,6 @@ Notes
 * `setup.ps1` now uses the parameter `-SftpHost` instead of the reserved
   name `-Host`. This avoids a "Variable not writable" error when entering
   SFTP credentials.
-* The credential test no longer aborts the wizard with a `NativeCommandError`
-  when rclone reports missing config or a login failure.
-* Credential checks now use an obscured password so valid logins no longer fail.
 * Quoted SFTP parameters so passwords with spaces or special characters work.
 
 

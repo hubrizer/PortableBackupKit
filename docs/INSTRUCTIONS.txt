@@ -33,13 +33,12 @@ If you host on WPX.NET you will need an SFTP login for the backup kit.
    • **Port**        – 22 (default) or 2222 for WPX
    • **Username**    – your SFTP login
    • **Password**    – typed invisibly
-     (the wizard re-prompts if server, user or password are blank)
-     *Credentials are tested before continuing*
-     (spaces and special characters are supported)
-   • **Remote source path** – `/` for entire account or `/public_html`\
-     *(press Enter for `/`)*
-   • **Local destination folder** – e.g. `D:\Backups\MySite`\
-     *(must be a valid local path and cannot be blank; the wizard re-prompts until valid)*
+    (the wizard re-prompts if server, user or password are blank)
+    (spaces and special characters are supported)
+    • **Remote source path** – `/` for entire account or `/public_html`\
+      *(press Enter for `/`)*
+    • **Local destination folder** – e.g. `D:\Backups\MySite`\
+      *(must be a valid local path and cannot be blank; the wizard re-prompts until valid)*
    • **Schedule**    – choose:
        1 = daily at HH:MM
        2 = every N hours
@@ -88,13 +87,12 @@ Troubleshooting
 • Log file lives next to *archive\…* as `backup.log`.
 • Task Scheduler → “Task Scheduler Library” → find the job → *History* tab
   shows last run/next run and exit codes.
-• If valid credentials are repeatedly rejected, update the scripts and retry –
-  the login check now uses an obscured password.
+• If valid credentials are repeatedly rejected, update the scripts and retry.
 • If storage fills, prune archive or move the destination folder.
 
 Need a full restore?
 --------------------
-1. Copy the desired snapshot folder over *current* (or pull single files).  
+1. Copy the desired snapshot folder over *current* (or pull single files).
 2. Run `backup.ps1` to re-sync the restored content to the SFTP server.
 
 Enjoy safe, incremental backups!  🙂
