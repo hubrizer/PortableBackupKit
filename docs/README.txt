@@ -75,6 +75,7 @@ Notes
   SFTP credentials.
 * The credential test no longer aborts the wizard with a `NativeCommandError`
   when rclone reports missing config or a login failure.
+* Credential checks now use an obscured password so valid logins no longer fail.
 * Quoted SFTP parameters so passwords with spaces or special characters work.
 
 

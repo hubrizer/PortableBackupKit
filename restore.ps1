@@ -24,10 +24,11 @@ function Prompt-SftpCredential {
             ).Length
         } while ($len -eq 0)
         Write-Host 'Testing credentials...'
-        $plain = [Runtime.InteropServices.Marshal]::PtrToStringAuto([
-            Runtime.InteropServices.Marshal]::SecureStringToBSTR($securePw))
+        $plain    = [Runtime.InteropServices.Marshal]::PtrToStringAuto([
+                        Runtime.InteropServices.Marshal]::SecureStringToBSTR($securePw))
+        $obscured = & $RcloneExe obscure $plain
         & $RcloneExe lsf ':sftp:/' --sftp-host="$host" --sftp-port="$port" \
-            --sftp-user="$user" --sftp-pass="$plain" 1>$null 2>$null
+            --sftp-user="$user" --sftp-pass="$obscured" 1>$null 2>$null
         if ($LASTEXITCODE -eq 0) { Write-Host 'SFTP login OK.'; $credOK=$true }
         else { Write-Warning 'Login failed. Please re-enter.' }
     }
