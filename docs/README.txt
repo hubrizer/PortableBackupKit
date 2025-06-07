@@ -59,8 +59,11 @@ To watch a job in real time:
 
 Uninstall
 ---------
-Delete the Task-Scheduler job "Portable Rclone Incremental Backup",
-then delete the PortableBackupKit folder.
+Run `uninstall.ps1` to remove the Task-Scheduler job "Portable Rclone Incremental Backup".
+The script can also delete `rclone.conf`, `backup.ps1`, `last-run.txt`,
+`backup.log` and any local backup folders.
+Deleting the entire PortableBackupKit folder is only needed after
+running the script.
 
 See INSTRUCTIONS.txt for step-by-step details and troubleshooting.
 
