@@ -23,3 +23,13 @@ No installation is required; simply unzip the folder and run the setup wizard.
 4. Answer the prompts. The first backup will run according to the schedule you choose.
 
 See [docs/README.txt](docs/README.txt) and [docs/INSTRUCTIONS.txt](docs/INSTRUCTIONS.txt) for full instructions and troubleshooting tips.
+
+## Log messages
+
+Rclone may retry a failed operation automatically. When that happens you might see a line like:
+
+```text
+ERROR : Attempt 2/3 succeeded
+```
+
+Even though rclone labels it as an error, this simply means the retry worked and the run continues normally.
