@@ -78,7 +78,6 @@ Notes
 * Quoted SFTP parameters so passwords with spaces or special characters work.
 * `ERROR : Attempt 2/3 succeeded` in `backup.log` means the first try failed but
   a retry was successful.
-* `uninstall.ps1` no longer offers to delete `backup.ps1`.
 
 
 SFTP CREDENTIALS

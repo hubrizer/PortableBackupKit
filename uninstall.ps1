@@ -12,7 +12,7 @@ Write-Host "`n=== PortableBackupKit Uninstall ===`n"
 try {
     $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop  # works even if job is in a sub-folder
     Disable-ScheduledTask  $task | Out-Null
-    Unregister-ScheduledTask $task -Confirm:$false
+    Unregister-ScheduledTask -InputObject $task -Confirm:$false
     Write-Host "OK  Task '$TaskName' removed."
 } catch {
     Write-Host "INFO Task '$TaskName' not found (already removed)."
