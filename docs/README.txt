@@ -68,6 +68,11 @@ running the script.
 
 See INSTRUCTIONS.txt for step-by-step details and troubleshooting.
 
+Notes
+-----
+* `setup.ps1` now uses the parameter `-SftpHost` instead of the reserved
+  name `-Host`. This avoids a "Variable not writable" error when entering
+  SFTP credentials.
 
 
 SFTP CREDENTIALS

@@ -15,10 +15,10 @@ $TaskName    = 'Portable Rclone Incremental Backup'
 # ─────────────────────────────────────────────────────────────────────
 
 # test SFTP credentials via rclone
-function Test-SftpCredential($Host,$Port,$User,$SecurePw) {
+function Test-SftpCredential($SftpHost,$Port,$User,$SecurePw) {
     $plain = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
         [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePw))
-    & $RcloneExe lsf ':sftp:/' --sftp-host=$Host --sftp-port=$Port `
+    & $RcloneExe lsf ':sftp:/' --sftp-host=$SftpHost --sftp-port=$Port `
         --sftp-user=$User --sftp-pass=$plain 1>$null 2>$null
     return ($LASTEXITCODE -eq 0)
 }
@@ -48,7 +48,7 @@ while (-not $credOK) {
         ).Length
     } while ($pwLength -eq 0)
     Write-Host 'Testing SFTP credentials...'
-    if (Test-SftpCredential $SftpHost $SftpPort $SftpUser $SecurePw) {
+    if (Test-SftpCredential -SftpHost $SftpHost -Port $SftpPort -User $SftpUser -SecurePw $SecurePw) {
         Write-Host 'SFTP login successful.'
         $credOK = $true
     } else {
