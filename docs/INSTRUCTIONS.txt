@@ -86,8 +86,8 @@ Change the value to any integer up to 30. Snapshots older than that many days ar
 
 Changing Schedule Later
 -----------------------
-Run **setup.ps1** again; it overwrites the Task Scheduler trigger and
-updates rclone.conf but keeps existing credentials.
+Run **setup.ps1** again; it overwrites the Task Scheduler trigger and updates rclone.conf
+but keeps existing credentials. Saved retry and timeout settings appear as the defaults.
 
 Updating
 --------

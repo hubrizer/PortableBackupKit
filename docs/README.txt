@@ -83,7 +83,7 @@ Notes
 * Run `Set-ExecutionPolicy` and `./setup.ps1` as two commands or join them with a semicolon.
 * `setup.ps1` now checks if the remote entry exists in `rclone.conf` before updating.
   When missing, it runs `config create` instead of `config update`.
-* Reliability options (timeouts and retries) are stored in `rclone.conf`
+* Reliability options (timeouts and retries) are stored in `rclone.conf`; rerunning the wizard shows them as defaults.
 
 
 SFTP CREDENTIALS
