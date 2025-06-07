@@ -85,9 +85,11 @@ updates rclone.conf but keeps existing credentials.
 
 Troubleshooting
 ---------------
-• Log file lives next to *archive\…* as `backup.log`.  
+• Log file lives next to *archive\…* as `backup.log`.
 • Task Scheduler → “Task Scheduler Library” → find the job → *History* tab
-  shows last run/next run and exit codes.  
+  shows last run/next run and exit codes.
+• If valid credentials are repeatedly rejected, update the scripts and retry –
+  the login check now uses an obscured password.
 • If storage fills, prune archive or move the destination folder.
 
 Need a full restore?
