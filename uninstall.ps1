@@ -19,12 +19,19 @@ try {
     Write-Host "INFO Task '$TaskName' not found (already removed)."
 }
 
-# 2. Delete backup.ps1 and rclone.conf?
-if (Read-Host 'Delete backup.ps1 and rclone.conf? (y/N)' -match '^[Yy]$') {
-    foreach ($f in @($BackupPS,$RcloneCF)) { if (Test-Path $f) { Remove-Item $f -Force } }
-    Write-Host "OK  Script and config removed."
+# 2. Optionally remove rclone.conf and backup.ps1
+if (Read-Host 'Delete rclone.conf for a fresh setup? (y/N)' -match '^[Yy]$') {
+    if (Test-Path $RcloneCF) { Remove-Item $RcloneCF -Force }
+    Write-Host 'OK  rclone.conf removed.'
 } else {
-    Write-Host "Keeping backup.ps1 / rclone.conf."
+    Write-Host 'Keeping rclone.conf.'
+}
+
+if (Read-Host 'Delete backup.ps1 as well? (y/N)' -match '^[Yy]$') {
+    if (Test-Path $BackupPS) { Remove-Item $BackupPS -Force }
+    Write-Host 'OK  backup.ps1 removed.'
+} else {
+    Write-Host 'Keeping backup.ps1.'
 }
 
 # 3. Delete local backup data?
