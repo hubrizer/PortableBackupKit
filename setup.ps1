@@ -119,7 +119,12 @@ $PlainPw  = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
 $Obscured = & $RcloneExe obscure $PlainPw
 $RemoteName = 'remote'
 $env:RCLONE_CONFIG = $RcloneConf
+$remoteExists = $false
 if (Test-Path $RcloneConf) {
+    $dump = & $RcloneExe config dump
+    $remoteExists = $dump -match "\[$RemoteName\]"
+}
+if ($remoteExists) {
     & $RcloneExe config update $RemoteName host="$SftpHost" port="$SftpPort" user="$SftpUser" pass="$Obscured"
 } else {
     & $RcloneExe config create $RemoteName sftp host="$SftpHost" port="$SftpPort" user="$SftpUser" pass="$Obscured"

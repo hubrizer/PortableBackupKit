@@ -83,6 +83,8 @@ Notes
 * `ERROR : Attempt 2/3 succeeded` in `backup.log` means the first try failed but
   a retry was successful.
 * Run `Set-ExecutionPolicy` and `./setup.ps1` as two commands or join them with a semicolon.
+* `setup.ps1` now checks if the remote entry exists in `rclone.conf` before updating.
+  When missing, it runs `config create` instead of `config update`.
 
 
 SFTP CREDENTIALS
