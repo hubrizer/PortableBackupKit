@@ -84,6 +84,7 @@ Notes
 * `setup.ps1` now checks if the remote entry exists in `rclone.conf` before updating.
   When missing, it runs `config create` instead of `config update`.
 * Reliability options (timeouts and retries) are stored in `rclone.conf`; rerunning the wizard shows them as defaults.
+* Saved SFTP host, port, username and paths are reused from rclone.conf; only the password must be entered again.
 
 
 SFTP CREDENTIALS
