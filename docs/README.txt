@@ -11,7 +11,7 @@ Main points
 -----------
 * Mirrors the remote server into current\
 * Creates dated snapshots in archive\YYYY-MM-DD_HHMMSS\
-* Keeps only the last 30 days of snapshots (changeable)
+* Keeps snapshots for 7 days by default (configurable up to 30)
 * Runs on a schedule you choose (daily, every N hours, or weekly)
 * Shows live progress in the console and in backup.log
 * Optional Brevo e-mail when a run finishes
@@ -73,5 +73,7 @@ YOUR_BREVO_KEY
 
 Sender Email:
 your_sender_email@example.com
+Sender Name:
+Backup Bot
 
 send to: <any email>

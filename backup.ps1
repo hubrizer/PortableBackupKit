@@ -34,7 +34,9 @@ if (-not $cfg) {
 $Remote        = $cfg['Remote']
 $Current       = $cfg['Current']
 $ArchiveRoot   = $cfg['ArchiveRoot']
-$RetentionDays = if ($cfg['RetentionDays']) { [int]$cfg['RetentionDays'] } else { 30 }
+$RetentionDays = if ($cfg['RetentionDays']) { [int]$cfg['RetentionDays'] } else { 7 }
+if ($RetentionDays -gt 30) { $RetentionDays = 30 }
+$BrevoName     = if ($cfg['BrevoName']) { $cfg['BrevoName'] } else { 'Backup Bot' }
 $BrevoKey      = $cfg['BrevoKey']
 $BrevoSender   = $cfg['BrevoSender']
 $BrevoTo       = $cfg['BrevoTo']
@@ -42,6 +44,10 @@ $SubjectBase   = $cfg['SubjectBase']
 
 $env:RCLONE_CONFIG = $ConfPath
 $Rclone = Join-Path $PSScriptRoot 'rclone.exe'
+$LastRunFile = Join-Path $PSScriptRoot 'last-run.txt'
+$LastRun = if (Test-Path $LastRunFile) {
+    [datetime](Get-Content $LastRunFile | Select-Object -First 1)
+} else { $null }
 
 New-Item -Path $Current -ItemType Directory -Force | Out-Null
 New-Item -Path $ArchiveRoot -ItemType Directory -Force | Out-Null
@@ -77,16 +83,47 @@ if (Test-Path $LogFile) {
 }
 
 $End = Get-Date
+$Duration = New-TimeSpan $Start $End
+
+# Extract log entries from this run for the report
+$Changes = @()
+if (Test-Path $LogFile) {
+    $RunLines = Get-Content $LogFile | Where-Object {
+        if ($_ -match '^(\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2})') {
+            $ts = [datetime]::ParseExact($matches[1], 'yyyy/MM/dd HH:mm:ss', $null)
+            $ts -ge $Start -and $ts -le $End
+        } else { $false }
+    }
+    $Changes = $RunLines | Where-Object { $_ -match ': (Copied|Deleted|Updated|Moved)' } |
+               ForEach-Object { $_ -replace '^.+INFO\s+:\s+', '' }
+}
+
 if ($BrevoKey -and $BrevoSender -and $BrevoTo) {
     $Status  = if ($LASTEXITCODE -eq 0) { 'SUCCESS' } else { 'FAIL' }
     $Subject = "$SubjectBase [$Status] $($Start.ToString('yyyy-MM-dd HH:mm')) -> $($End.ToString('HH:mm'))"
-    $Body    = "Backup run: $Status`nStart : $Start`nEnd   : $End`nLog file: $LogFile"
+    $BodyLines = @(
+        "Backup run: $Status",
+        "Start    : $Start",
+        "End      : $End",
+        "Duration : $([math]::Round($Duration.TotalMinutes,2)) minutes"
+    )
+    if ($LastRun) { $BodyLines += "Previous : $LastRun" }
+    $BodyLines += "Current dir : $Current"
+    $BodyLines += "Snapshot dir: $Archive"
+    if ($Changes.Count -gt 0) {
+        $BodyLines += ""
+        $BodyLines += "Files updated:"
+        $BodyLines += $Changes
+    }
+    $BodyLines += ""
+    $BodyLines += "Log file: $LogFile"
+    $Body = $BodyLines -join "`n"
     try {
         Invoke-RestMethod -Method Post `
             -Uri 'https://api.brevo.com/v3/smtp/email' `
             -Headers @{ 'api-key' = $BrevoKey; 'Content-Type' = 'application/json' } `
-            -Body ( @{ 
-                sender      = @{ name = 'Backup Bot'; email = $BrevoSender }
+            -Body ( @{
+                sender      = @{ name = $BrevoName; email = $BrevoSender }
                 to          = @(@{ email = $BrevoTo })
                 subject     = $Subject
                 textContent = $Body
@@ -96,3 +133,5 @@ if ($BrevoKey -and $BrevoSender -and $BrevoTo) {
         Write-Warning "Brevo e-mail failed: $($_.Exception.Message)"
     }
 }
+
+Set-Content -Path $LastRunFile -Value $End

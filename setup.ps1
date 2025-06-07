@@ -71,18 +71,25 @@ switch ($Choice) {
     }
 }
 
-# 4  OPTIONAL Brevo e-mail
+$RetentionDays = Read-Host 'Days to keep snapshots [7, max 30]'
+if (-not $RetentionDays) { $RetentionDays = 7 }
+$RetentionDays = [int]$RetentionDays
+if ($RetentionDays -gt 30) { $RetentionDays = 30 }
+
+# 5  OPTIONAL Brevo e-mail
 $BrevoKey = Read-Host 'Brevo API key (Enter = skip e-mail)'
 if ($BrevoKey) {
     $BrevoSender = Read-Host 'Brevo SENDER e-mail (verified domain)'
+    $BrevoName   = Read-Host 'Brevo SENDER display name [Backup Bot]'
+    if (-not $BrevoName) { $BrevoName = 'Backup Bot' }
     $BrevoTo     = Read-Host 'Destination e-mail for alerts (email address to receive alerts)'
     $SubjectBase = Read-Host 'Subject prefix [My SFTP Backup]'
     if (-not $SubjectBase) { $SubjectBase = 'My SFTP Backup' }
 } else {
-    $BrevoSender = ''; $BrevoTo = ''; $SubjectBase = ''
+    $BrevoSender = ''; $BrevoName=''; $BrevoTo = ''; $SubjectBase = ''
 }
 
-# 5  rclone remote
+# 6  rclone remote
 $PlainPw  = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
         [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePw))
 $Obscured = & $RcloneExe obscure $PlainPw
@@ -94,16 +101,17 @@ if (Test-Path $RcloneConf) {
     & $RcloneExe config create $RemoteName sftp host=$SftpHost port=$SftpPort user=$SftpUser pass=$Obscured
 }
 
-# 6  Store settings in rclone.conf
+# 7  Store settings in rclone.conf
 $RemoteSpec = "${RemoteName}:$RemotePath"
 $section = @"
 [backup]
 Remote        = $RemoteSpec
 Current       = $LocalRoot\current
 ArchiveRoot   = $LocalRoot\archive
-RetentionDays = 30
+RetentionDays = $RetentionDays
 BrevoKey      = $BrevoKey
 BrevoSender   = $BrevoSender
+BrevoName     = $BrevoName
 BrevoTo       = $BrevoTo
 SubjectBase   = $SubjectBase
 "@
@@ -123,7 +131,7 @@ if (Test-Path $RcloneConf) {
 Add-Content -Path $RcloneConf -Value @('', $section)
 Write-Host 'Settings stored in rclone.conf'
 
-# 7  Task Scheduler job
+# 8  Task Scheduler job
 $Action    = New-ScheduledTaskAction -Execute 'powershell.exe' `
                -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$BackupPS1`""
 $Principal = New-ScheduledTaskPrincipal -UserId $env:UserName -RunLevel Highest
