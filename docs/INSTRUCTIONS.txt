@@ -96,4 +96,9 @@ Need a full restore?
 1. Copy the desired snapshot folder over *current* (or pull single files).
 2. Run `backup.ps1` to re-sync the restored content to the SFTP server.
 
+Uninstall
+---------
+Run `uninstall.ps1` to remove scheduled tasks and, optionally, cleanup files.
+Deletion only occurs when you answer **Y** to each prompt.
+
 Enjoy safe, incremental backups!  🙂

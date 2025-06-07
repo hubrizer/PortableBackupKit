@@ -65,6 +65,7 @@ The script can also delete `rclone.conf`, `backup.ps1`, `last-run.txt`,
 `backup.log` and any local backup folders.
 Deleting the entire PortableBackupKit folder is only needed after
 running the script.
+Deletion only happens when you reply `Y` to each prompt.
 
 See INSTRUCTIONS.txt for step-by-step details and troubleshooting.
 
