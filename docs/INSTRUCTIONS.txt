@@ -93,7 +93,8 @@ Updating
 --------
 Run **update.ps1** at any time to pull the latest toolkit files from the repository.
 
-It uses Git in PATH or `git.exe` in the toolkit folder.
+It uses Git in PATH or a complete PortableGit distribution next to the scripts.
+The tiny `git.exe` here merely launches that full copy.
 
 
 Troubleshooting
