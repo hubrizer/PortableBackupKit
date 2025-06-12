@@ -15,7 +15,7 @@ Main points
 * Runs on a schedule you choose (daily, every N hours, or weekly)
 * Shows live progress in the console and in backup.log
 * Optional Brevo e-mail when a run finishes, summarizing remote info, files transferred and data volume
-* `update.ps1` pulls new versions of these scripts via git
+* `update.ps1` pulls new versions of these scripts via git and hints if git is missing
 * Uses `--stats-log-level NOTICE` so totals appear in the log and e-mail
 * Setup lets you set timeouts and retry counts to avoid stalled transfers
 

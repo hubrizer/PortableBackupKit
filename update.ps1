@@ -3,7 +3,7 @@
 $KitDir = $PSScriptRoot
 
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-    Write-Error 'git executable not found.'
+    Write-Error "git executable not found. Install Git for Windows and ensure 'git' is in your PATH."
     exit 1
 }
 
