@@ -17,6 +17,7 @@ Main points
 * Optional Brevo e-mail when a run finishes, summarizing remote info, files transferred and data volume
 
 * `update.ps1` pulls new versions using Git in PATH or `git.exe` in this folder
+* `menu.bat` provides a simple menu for setup, restore, uninstall and update
 
 * Uses `--stats-log-level NOTICE` so totals appear in the log and e-mail
 * Setup lets you set timeouts and retry counts to avoid stalled transfers
@@ -29,6 +30,7 @@ PortableBackupKit\
     setup.ps1          (wizard – run once)
     backup.ps1         (job script)
     update.ps1         (pulls latest toolkit files)
+    menu.bat           (interactive menu)
     rclone.conf        (generated, encrypted settings)
     README.txt
     INSTRUCTIONS.txt
@@ -45,14 +47,12 @@ Requirements
 
 * Git for Windows in PATH or `git.exe` next to the scripts for update.ps1
 
-
 Quick start
 -----------
 1. Extract this folder, for example to C:\Tools\PortableBackupKit
 2. Open an *elevated* PowerShell window in that folder
-3. Run:
-       Set-ExecutionPolicy -Scope Process Bypass -Force; .\setup.ps1
-4. Answer the prompts
+3. Run `menu.bat` and choose **Setup**
+   (or run `Set-ExecutionPolicy -Scope Process Bypass -Force; .\setup.ps1`)
    (the wizard re-prompts if the server, username or password are blank.
     Press **Enter** for the remote path to use `/`. A destination folder is required and re-prompts until valid.
 
