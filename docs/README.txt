@@ -15,7 +15,9 @@ Main points
 * Runs on a schedule you choose (daily, every N hours, or weekly)
 * Shows live progress in the console and in backup.log
 * Optional Brevo e-mail when a run finishes, summarizing remote info, files transferred and data volume
-* `update.ps1` pulls new versions of these scripts via git. If Git for Windows is not installed, it uses `git.exe` in this folder
+
+* `update.ps1` pulls new versions using Git in PATH or `git.exe` in this folder
+
 * Uses `--stats-log-level NOTICE` so totals appear in the log and e-mail
 * Setup lets you set timeouts and retry counts to avoid stalled transfers
 
@@ -40,8 +42,9 @@ Requirements
 * Your SFTP host, port, username, password
 * Disk space for the mirror plus snapshots
 * (Optional) Brevo v3 API key and a verified sender address
-* (Optional) Git for Windows in your PATH for update.ps1
-  (script falls back to `git.exe` in this folder)
+
+* Git for Windows in PATH or `git.exe` next to the scripts for update.ps1
+
 
 Quick start
 -----------
