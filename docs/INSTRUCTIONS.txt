@@ -61,6 +61,7 @@ If you host on WPX.NET you will need an SFTP login for the backup kit.
 
         powershell -ExecutionPolicy Bypass -File .\backup.ps1
 
+   Or choose `[5] Backup Now` in `menu.bat`.
    Watch rclone copy the initial data; subsequent runs transfer only changes.
 
 Files & Folders Created

@@ -12,7 +12,7 @@ No installation is required; simply unzip the folder and run the setup wizard.
 - `restore.ps1` – restore wizard that uploads a selected snapshot back to the SFTP server.
 - `uninstall.ps1` – removes the scheduled task and can delete configuration files and local backups.
 - `update.ps1` – pulls the latest version of the toolkit from this repository.
-- `menu.bat` – interactive menu for setup, restore, uninstall or update
+- `menu.bat` – interactive menu for setup, restore, uninstall, update or manual backup
 
 ## Quick start
 

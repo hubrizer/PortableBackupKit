@@ -17,7 +17,7 @@ Main points
 * Optional Brevo e-mail when a run finishes, summarizing remote info, files transferred and data volume
 
 * `update.ps1` pulls new versions using Git in PATH or `git.exe` in this folder
-* `menu.bat` provides a simple menu for setup, restore, uninstall and update
+* `menu.bat` provides a simple menu for setup, restore, uninstall, update and manual backup
 
 
 * Uses `--stats-log-level NOTICE` so totals appear in the log and e-mail
