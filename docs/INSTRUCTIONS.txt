@@ -24,9 +24,8 @@ If you host on WPX.NET you will need an SFTP login for the backup kit.
 3. Choose a username, password and root path (e.g. `/public_html`).
 4. Save the user and remember that WPX uses SFTP port `2222`.
 
-4. Run the setup wizard:
-
-        .\setup.ps1
+4. Run `menu.bat` and choose [1] Setup
+   (or run `.\setup.ps1` directly)
 
 5. Follow the prompts:
    • **SFTP server** – e.g. `s20.wpxhosting.com`
@@ -108,11 +107,11 @@ Troubleshooting
 Need a full restore?
 --------------------
 1. Copy the desired snapshot folder over *current* (or pull single files).
+Alternatively run `restore.ps1` to upload a snapshot back to the server.
 2. Run `backup.ps1` to re-sync the restored content to the SFTP server.
 
 Uninstall
----------
-Run `uninstall.ps1` to remove scheduled tasks and, optionally, cleanup files.
+Run `uninstall.ps1` (or choose **Uninstall** in `menu.bat`) to remove scheduled tasks and, optionally, cleanup files.
 Deletion only occurs when you answer **Y** to each prompt.
 
 Enjoy safe, incremental backups!  🙂

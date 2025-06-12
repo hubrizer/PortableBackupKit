@@ -12,17 +12,14 @@ No installation is required; simply unzip the folder and run the setup wizard.
 - `restore.ps1` – restore wizard that uploads a selected snapshot back to the SFTP server.
 - `uninstall.ps1` – removes the scheduled task and can delete configuration files and local backups.
 - `update.ps1` – pulls the latest version of the toolkit from this repository.
+- `menu.bat` – interactive menu for setup, restore, uninstall or update
 
 ## Quick start
 
 1. Extract the PortableBackupKit folder to any location, e.g. `C:\Tools\PortableBackupKit`.
 2. Launch an **elevated** PowerShell window in that folder.
-3. Run:
-
-    ```powershell
-    Set-ExecutionPolicy -Scope Process Bypass -Force
-    .\setup.ps1
-    ```
+3. Run `menu.bat` and choose **Setup**
+   (or run `Set-ExecutionPolicy -Scope Process Bypass -Force; .\setup.ps1`)
 4. Answer the prompts. The first backup will run according to the schedule you choose.
 
 See [docs/README.txt](docs/README.txt)
