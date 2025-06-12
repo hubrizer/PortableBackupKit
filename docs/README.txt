@@ -16,7 +16,8 @@ Main points
 * Shows live progress in the console and in backup.log
 * Optional Brevo e-mail when a run finishes, summarizing remote info, files transferred and data volume
 
-* `update.ps1` pulls new versions using Git in PATH or `git.exe` in this folder
+* `update.ps1` pulls new versions using Git in PATH or a full PortableGit bundle next to the scripts
+  (the tiny `git.exe` included here is only a launcher)
 
 * Uses `--stats-log-level NOTICE` so totals appear in the log and e-mail
 * Setup lets you set timeouts and retry counts to avoid stalled transfers
@@ -43,7 +44,7 @@ Requirements
 * Disk space for the mirror plus snapshots
 * (Optional) Brevo v3 API key and a verified sender address
 
-* Git for Windows in PATH or `git.exe` next to the scripts for update.ps1
+* Git for Windows in PATH or a complete PortableGit distribution next to the scripts for update.ps1
 
 
 Quick start
