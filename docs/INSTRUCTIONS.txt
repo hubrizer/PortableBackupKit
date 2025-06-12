@@ -43,7 +43,7 @@ If you host on WPX.NET you will need an SFTP login for the backup kit.
        2 = every N hours
        3 = weekly on specific days
    • **Time/Interval** – depends on option above
-   • **Retention days** – how long to keep snapshots (7–30)
+   • **Retention days** – how long to keep snapshots (3–30)
    • **Retries** – times to retry a failed transfer [3]
    • **Retry wait** – seconds to pause between retries [30]
    • **Low-level retries** – network retry count [10]
@@ -80,7 +80,7 @@ Adjusting Retention
 -------------------
 Open **rclone.conf** and edit the `[backup]` section:
 
-    RetentionDays = 7
+    RetentionDays = 3
 
 Change the value to any integer up to 30. Snapshots older than that many days are deleted each run.
 
