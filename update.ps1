@@ -12,6 +12,20 @@ if (-not (Test-Path $gitPath)) {
     exit 1
 }
 
+# verify git actually runs
+try {
+    & $gitPath --version > $null
+    if ($LASTEXITCODE -ne 0) {
+        throw
+    }
+} catch {
+    Write-Error (
+        "git found at $gitPath but failed to execute. " +
+        "Install Git for Windows or place a full PortableGit distribution next to the scripts."
+    )
+    exit 1
+}
+
 Write-Host "`nPulling updates from repository..."
 & $gitPath -C $KitDir pull
 
