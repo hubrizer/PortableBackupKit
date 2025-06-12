@@ -19,6 +19,7 @@ Main points
 * `update.ps1` pulls new versions using Git in PATH or `git.exe` in this folder
 * `menu.bat` provides a simple menu for setup, restore, uninstall and update
 
+
 * Uses `--stats-log-level NOTICE` so totals appear in the log and e-mail
 * Setup lets you set timeouts and retry counts to avoid stalled transfers
 
@@ -45,7 +46,7 @@ Requirements
 * Disk space for the mirror plus snapshots
 * (Optional) Brevo v3 API key and a verified sender address
 
-* Git for Windows in PATH or `git.exe` next to the scripts for update.ps1
+* Git for Windows in PATH or a complete PortableGit distribution next to the scripts for update.ps1
 
 Quick start
 -----------
