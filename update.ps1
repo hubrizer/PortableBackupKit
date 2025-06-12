@@ -2,13 +2,17 @@
 
 $KitDir = $PSScriptRoot
 
-if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-    Write-Error "git executable not found. Install Git for Windows and ensure 'git' is in your PATH."
+$gitPath = (Get-Command git -ErrorAction SilentlyContinue).Path
+if (-not $gitPath) {
+    $gitPath = Join-Path $KitDir 'git.exe'
+}
+if (-not (Test-Path $gitPath)) {
+    Write-Error "git executable not found. Install Git for Windows or place git.exe in the toolkit folder."
     exit 1
 }
 
 Write-Host "`nPulling updates from repository..."
-& git -C $KitDir pull
+& $gitPath -C $KitDir pull
 if ($LASTEXITCODE -eq 0) {
     Write-Host 'Repository updated.'
 } else {

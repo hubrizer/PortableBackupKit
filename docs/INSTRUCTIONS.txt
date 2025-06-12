@@ -92,7 +92,7 @@ but keeps existing credentials and paths. All saved values appear as defaults ex
 Updating
 --------
 Run **update.ps1** at any time to pull the latest toolkit files from the repository.
-Git for Windows must be installed and in your PATH so this script can run.
+It uses Git in PATH or `git.exe` in the toolkit folder.
 
 Troubleshooting
 ---------------
